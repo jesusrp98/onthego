@@ -3,31 +3,30 @@ package com.chechu.onthego;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //openTutorial();
-        checkLogIn();
+        openTutorial();
         setContentView(R.layout.activity_main);
-
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        FloatingActionButton fab =  findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        //ui init
+        viewPager = findViewById(R.id.activity_main_viewpager);
+        tabLayout = findViewById(R.id.activity_main_tablayout);
 
-            }
-        });
+        initViewPager();
     }
 
     @Override
@@ -44,23 +43,31 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_logout:
-                startActivity(new Intent(this, Login.class));
+                Intent intent = new Intent(this, Login.class);
+                intent.putExtra("isLogOut", true);
+                startActivity(intent);
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void openTutorial() {
-        //opens tutorial activity if it hasn't opened yet
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.key_tutorial), false))
-            startActivity(new Intent(this, Tutorial.class));
+    private void initViewPager() {
+        final String[] titleArray = getResources().getStringArray(R.array.display_maintab);
+        final Fragment[] fragments = {new FragmentRecommended(), new FragmentQR(), new FragmentShopping()};
+        final AdapterTabLayout adapter = new AdapterTabLayout(getSupportFragmentManager());
+
+        for (int i = 0; i < 3; i++)
+            adapter.addFragment(fragments[i], titleArray[i]);
+
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(1);
     }
 
-    private void checkLogIn() {
-        //checks if user has logged in
-        //if not it opens login activity
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.key_login), false))
-            startActivity(new Intent(this, Login.class));
+    private void openTutorial() {
+        //opens tutorial activity if it hasn't opened yet
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.key_tutorial), false))
+            startActivity(new Intent(this, Tutorial.class));
     }
 }

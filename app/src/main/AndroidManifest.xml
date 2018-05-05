@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Login" />
-        <activity android:name=".Tutorial"></activity>
+        <activity android:name=".Tutorial" android:noHistory="true"/>
     </application>
 
 </manifest>

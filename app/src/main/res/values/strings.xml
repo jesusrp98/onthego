@@ -1,9 +1,23 @@
 <resources>
     <string name="app_name">OnTheGo</string>
+    <string name="activity_login">Log In</string>
 
     <string name="action_account">My account</string>
     <string name="action_logout">Log out</string>
+    <string name="paypal">Check PayPal</string>
+
+    <string name="dialog_logout_title">Log out</string>
+    <string name="dialog_logout_body">U sure?</string>
+
+    <string-array name="display_maintab">
+        <item>RECOMMENDED</item>
+        <item>QR CODE</item>
+        <item>LAST SHOPPINGS</item>
+    </string-array>
+
+    <string name="qr_text">Scan QR code to start shopping</string>
 
     <string name="key_tutorial">key_tutorial</string>
     <string name="key_login">key_login</string>
+    <string name="key_user_token">key_user_token</string>
 </resources>
