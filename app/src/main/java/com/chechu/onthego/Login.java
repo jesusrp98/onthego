@@ -123,7 +123,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }
+    }º
 
     private void signIn() {
         startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(googleApiClient), REQ_CODE);
