@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -19,6 +20,7 @@ import com.google.android.gms.common.api.Status;
 public class Login extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
     private GoogleApiClient googleApiClient;
     private SignInButton signInButton;
+    private Button signOutButton;
     private TextView userNameTextView;
     private static final int REQ_CODE = 9001;
 
@@ -44,7 +46,19 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             case R.id.signInButton:
                 signIn();
                 break;
+
+            case R.id.signOutButton:
+                signOut();
+                break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQ_CODE)
+            handleResult(Auth.GoogleSignInApi.getSignInResultFromIntent(data));
     }
 
     @Override
@@ -53,8 +67,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     }
 
     private void signIn() {
-        Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        startActivityForResult(intent, REQ_CODE);
+        startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(googleApiClient), REQ_CODE);
     }
 
     private void signOut() {
@@ -82,16 +95,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             //se muestran los datos
         } else {
             //pos no se muestran
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQ_CODE) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleResult(result);
         }
     }
 }
