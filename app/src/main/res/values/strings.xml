@@ -2,7 +2,8 @@
     <string name="app_name">OnTheGo</string>
 
     <string name="activity_login">Log In</string>
-    <string name="activity_welcome">Welcome to OnTheGo!</string>
+    <string name="activity_profile">My account</string>
+    <string name="activity_tutorial">Welcome to OnTheGo!</string>
     <string name="activity_shopping">Shopping List</string>
 
     <string name="action_account">My account</string>
@@ -22,9 +23,9 @@
     <string name="display_scan_qr">Scan QR code to start shopping</string>
     <string name="display_welcome_qr">Welcome to OnTheGo </string>
 
+    <string name="error_account">Error :(</string>
+
     <string name="key_tutorial">key_tutorial</string>
     <string name="key_login">key_login</string>
     <string name="key_user_token">key_user_token</string>
-    <string name="title_activity_welcome">Welcome</string>
-    <string name="title_activity_profile">Profile</string>
 </resources>

@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "924899028291",
+    "firebase_url": "https://onthego-3180f.firebaseio.com",
+    "project_id": "onthego-3180f",
+    "storage_bucket": "onthego-3180f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924899028291:android:3c9164d81a18eb91",
+        "android_client_info": {
+          "package_name": "com.chechu.onthego"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "924899028291-vbqgo9e41clsehhikncbnr0213q4jb09.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chechu.onthego",
+            "certificate_hash": "444e26e24f0919dace755332109ab0ae3bcac86a"
+          }
+        },
+        {
+          "client_id": "924899028291-kkin59ock3qd7eh08qa77o4ap2enh5bb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chechu.onthego",
+            "certificate_hash": "e558f70f89a1a3b61fc0d11ef5df0bcaad38eed4"
+          }
+        },
+        {
+          "client_id": "924899028291-d2f947lmt53s1om9us7ds0sc7i9af235.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo2x-ugh_nkAsMlz7WA67M9hpHuUuJahM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "924899028291-d2f947lmt53s1om9us7ds0sc7i9af235.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
