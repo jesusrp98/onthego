@@ -4,23 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/qr_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:textColor="?android:textColorSecondary"
+        android:layout_alignParentTop="true"/>
+
     <ImageView
         android:id="@+id/qr"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="50dp"
+        android:padding="42dp"
         android:src="@drawable/qr"
-        android:layout_above="@+id/qr_text"/>
+        android:layout_below="@+id/qr_welcome"
+        android:layout_above="@+id/qr_scan"/>
 
     <TextView
-        android:id="@+id/qr_text"
+        android:id="@+id/qr_scan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
         android:textSize="16sp"
         android:gravity="center"
         android:textStyle="italic"
-        android:text="@string/qr_text"
+        android:text="@string/display_scan_qr"
         android:textColor="?android:textColorSecondary"
         android:layout_alignParentBottom="true"/>
 

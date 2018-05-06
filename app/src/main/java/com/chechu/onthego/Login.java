@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -40,11 +41,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private SharedPreferences sharedPreferences;
     private GoogleSignInAccount account;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         final Bundle bundle = getIntent().getExtras();
         boolean logOut = false;
@@ -123,7 +125,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }º
+    }
 
     private void signIn() {
         startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(googleApiClient), REQ_CODE);

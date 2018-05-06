@@ -10,21 +10,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private TextView welcomeTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        openTutorial();
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         //ui init
         viewPager = findViewById(R.id.activity_main_viewpager);
         tabLayout = findViewById(R.id.activity_main_tablayout);
+        welcomeTextView = findViewById(R.id.qr_welcome);
+
+//        welcomeTextView.setText(getString(R.string.display_welcome_qr) + "user");
 
         initViewPager();
     }
@@ -63,11 +67,5 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(1);
-    }
-
-    private void openTutorial() {
-        //opens tutorial activity if it hasn't opened yet
-        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.key_tutorial), false))
-            startActivity(new Intent(this, Tutorial.class));
     }
 }

@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">OnTheGo</string>
+
     <string name="activity_login">Log In</string>
+    <string name="activity_welcome">Welcome to OnTheGo!</string>
+    <string name="activity_shopping">Shopping List</string>
 
     <string name="action_account">My account</string>
     <string name="action_logout">Log out</string>
+
     <string name="paypal">Check PayPal</string>
 
     <string name="dialog_logout_title">Log out</string>
@@ -15,9 +19,12 @@
         <item>LAST SHOPPINGS</item>
     </string-array>
 
-    <string name="qr_text">Scan QR code to start shopping</string>
+    <string name="display_scan_qr">Scan QR code to start shopping</string>
+    <string name="display_welcome_qr">Welcome to OnTheGo </string>
 
     <string name="key_tutorial">key_tutorial</string>
     <string name="key_login">key_login</string>
     <string name="key_user_token">key_user_token</string>
+    <string name="title_activity_welcome">Welcome</string>
+    <string name="title_activity_profile">Profile</string>
 </resources>

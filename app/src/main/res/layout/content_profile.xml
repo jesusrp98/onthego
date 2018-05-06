@@ -12,7 +12,7 @@
     tools:showIn="@layout/activity_login">
 
     <LinearLayout
-        android:id="@+id/profileLayout"
+        android:id="@+id1º21/profileLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
