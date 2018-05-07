@@ -2,7 +2,9 @@ package com.chechu.onthego;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,9 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
@@ -50,7 +50,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         //ui init
         viewPager = findViewById(R.id.activity_main_viewpager);
         tabLayout = findViewById(R.id.activity_main_tablayout);
-        initViewPager();
+
+        checkTutorial();
     }
 
     @Override
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 intent.putExtra("userPhoto", userPhoto);
                 startActivity(intent);
                 break;
+
             case R.id.action_logout:
                 logoutDialog();
                 break;
@@ -103,9 +105,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             userName = result.getSignInAccount().getDisplayName();
             userEmail = result.getSignInAccount().getEmail();
             userPhoto = result.getSignInAccount().getPhotoUrl().toString();
-        } else {
+            initViewPager();
+        } else
             gotoLogin();
-        }
     }
 
     private void logoutDialog() {
@@ -140,9 +142,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void gotoLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        startActivity(new Intent(this, LoginActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     private void initViewPager() {
@@ -163,5 +164,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(1);
+    }
+
+    private void checkTutorial() {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!sharedPreferences.getBoolean(getString(R.string.key_tutorial), false)) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.dialog_tutorial_title)
+                    .setMessage(R.string.dialog_tutorial_body)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivity(new Intent(getApplicationContext(), TutorialActivity.class));
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.action_later), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        }
     }
 }

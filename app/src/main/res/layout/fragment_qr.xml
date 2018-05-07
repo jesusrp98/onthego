@@ -12,14 +12,14 @@
         android:layout_margin="32dp"
         android:textSize="18sp"
         android:gravity="center"
-        android:textColor="?android:textColorSecondary"
+        android:textColor="?android:textColorPrimary"
         android:layout_alignParentTop="true"/>
 
     <ImageView
         android:id="@+id/qr"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="42dp"
+        android:padding="32dp"
         android:src="@drawable/qr"
         android:layout_below="@+id/qr_welcome"
         android:layout_above="@+id/qr_scan"/>

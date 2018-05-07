@@ -8,26 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class FragmentQR extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_qr, container, false);
 
-        final Bundle bundle = this.getArguments();
-
         //ui init
         final ImageView qr = view.findViewById(R.id.qr);
         final TextView welcomeTextView = view.findViewById(R.id.qr_welcome);
 
-        //welcomeTextView.setText(String.format("Welcome back %s!", bundle.getString("userName")));
+        welcomeTextView.setText(String.format(getString(R.string.display_welcome_screen), this.getArguments().getString("userName")));
 
         qr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(this, ShoppingList.class));
-                Toast.makeText(getContext(), "I'm a QR code :)", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getActivity(), ShoppingListActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         });
 

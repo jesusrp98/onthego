@@ -1,6 +1,7 @@
 package com.chechu.onthego;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +20,9 @@ public class TutorialActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                        .edit().putBoolean(getString(R.string.key_tutorial), true).apply();
+                onBackPressed();
             }
         });
     }
