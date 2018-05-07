@@ -1,15 +1,19 @@
 package com.chechu.onthego;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -18,13 +22,17 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private GoogleApiClient googleApiClient;
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
+
     private String userName;
+    private String userEmail;
+    private String userPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +61,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        gotoProfile(item.getItemId() == R.id.action_logout);
+        switch (item.getItemId()) {
+            case R.id.action_profile:
+                final Intent intent = new Intent(this, ProfileActivity.class);
+                intent.putExtra("userName", userName);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("userPhoto", userPhoto);
+                startActivity(intent);
+                break;
+            case R.id.action_logout:
+                logoutDialog();
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -80,16 +99,44 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        if (result.isSuccess())
+        if (result.isSuccess()) {
             userName = result.getSignInAccount().getDisplayName();
-        else
+            userEmail = result.getSignInAccount().getEmail();
+            userPhoto = result.getSignInAccount().getPhotoUrl().toString();
+        } else {
             gotoLogin();
+        }
     }
 
-    private void gotoProfile(boolean isLogout) {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra("isLogout", isLogout);
-        startActivity(intent);
+    private void logoutDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_logout_title)
+                .setMessage(R.string.dialog_logout_body)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        logout();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
+    }
+
+    private void logout() {
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                if (status.isSuccess())
+                    gotoLogin();
+                else
+                    Toast.makeText(getApplicationContext(), R.string.error_account, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void gotoLogin() {

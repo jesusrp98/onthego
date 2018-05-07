@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "924899028291-euck8nkd0kcla8e3go78oeutqfh81fob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chechu.onthego",
+            "certificate_hash": "27e97ffb3db211379603b0c19f1dfa494ba049ee"
+          }
+        },
+        {
+          "client_id": "924899028291-01ucrif0b7eeu5grad7ae40vnm17sr0f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chechu.onthego",
+            "certificate_hash": "e86cf6fb9a2cd76eba9ee21a774c3dfeee67ccd1"
+          }
+        },
+        {
           "client_id": "924899028291-vbqgo9e41clsehhikncbnr0213q4jb09.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
