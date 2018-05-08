@@ -24,6 +24,9 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private GoogleApiClient googleApiClient;
 
@@ -51,6 +54,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         viewPager = findViewById(R.id.activity_main_viewpager);
         tabLayout = findViewById(R.id.activity_main_tablayout);
 
+        //display purchase dialog if exists
+        final Intent intent = getIntent();
+        try {
+            final JSONObject purchase = new JSONObject(intent.getStringExtra("paymentDetails"))
+                    .getJSONObject("response");
+
+            purchaseDialog(purchase.getString("id"), purchase.getString("id")
+                    , intent.getStringExtra("paymentAmount"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         checkTutorial();
     }
 
@@ -73,6 +88,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
             case R.id.action_logout:
                 logoutDialog();
+                break;
+
+            case R.id.action_about:
+                startActivity(new Intent(this, AboutActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -129,6 +148,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .create().show();
     }
 
+    private void purchaseDialog(String id, String status, String amount) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_purchase_title)
+                .setMessage(R.string.dialog_purchase_body)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
+    }
+
     private void logout() {
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
@@ -174,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     .setMessage(R.string.dialog_tutorial_body)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            startActivity(new Intent(getApplicationContext(), TutorialActivity.class));
+                            sharedPreferences.edit().putBoolean(getString(R.string.key_tutorial), true).apply();
                             dialog.dismiss();
                         }
                     })

@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ShoppingDoneActivity extends AppCompatActivity {
+    private TextView userTextView;
     private TextView idTextView;
     private TextView statusTextView;
     private TextView amountTextView;
@@ -36,8 +37,7 @@ public class ShoppingDoneActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
         try {
-            showDetails(new JSONObject(intent.getStringExtra("paymentDetails"))
-                    .getJSONObject("response"), intent.getStringExtra("paymentAmount"));
+            showDetails(new JSONObject(intent.getStringExtra("paymentDetails")).getJSONObject("response"), intent.getStringExtra("paymentAmount"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

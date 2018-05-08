@@ -10,7 +10,10 @@
 
     <string name="action_account">My account</string>
     <string name="action_logout">Log out</string>
+    <string name="action_about">About</string>
     <string name="action_quit_shopping">Quit shopping</string>
+    <string name="action_delete">DELETE</string>
+    <string name="action_edit">EDIT</string>
 
     <string name="dialog_logout_title">Log out</string>
     <string name="dialog_logout_body">Are you sure you want to log out?</string>
@@ -20,6 +23,9 @@
 
     <string name="dialog_tutorial_title">Welcome to OnTheGo</string>
     <string name="dialog_tutorial_body">Would you like to do a tutorial about the OnTheGo experience?</string>
+
+    <string name="dialog_purchase_title">Welcome to OnTheGo</string>
+    <string name="dialog_purchase_body">Would you like to do a tutorial about the OnTheGo experience?</string>
 
     <string-array name="display_maintab">
         <item>RECOMMENDED</item>
@@ -36,4 +42,5 @@
     <string name="key_tutorial">key_tutorial</string>
     <string name="key_login">key_login</string>
     <string name="key_user_token">key_user_token</string>
+    <string name="title_activity_about">AboutActivity</string>
 </resources>
