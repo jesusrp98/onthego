@@ -23,7 +23,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,16 +56,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         //display purchase dialog if exists
         final Intent intent = getIntent();
         try {
-            final JSONObject purchase = new JSONObject(intent.getStringExtra("paymentDetails"))
-                    .getJSONObject("response");
+            final String paymentDetails = intent.getStringExtra("paymentDetails");
+            if (paymentDetails != null) {
+                final JSONObject purchase = new JSONObject(paymentDetails).getJSONObject("response");
 
-            purchaseDialog(purchase.getString("id"), purchase.getString("id")
-                    , intent.getStringExtra("paymentAmount"));
+                purchaseDialog(purchase.getString("id"), purchase.getString("state")
+                        , intent.getStringExtra("paymentAmount"));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        checkTutorial();
     }
 
     @Override
@@ -125,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             userEmail = result.getSignInAccount().getEmail();
             userPhoto = result.getSignInAccount().getPhotoUrl().toString();
             initViewPager();
+            checkTutorial();
         } else
             gotoLogin();
     }
@@ -151,12 +151,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void purchaseDialog(String id, String status, String amount) {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_purchase_title)
-                .setMessage(R.string.dialog_purchase_body)
+                .setMessage(String.format(getString(R.string.dialog_purchase_body), id, status, amount))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
                 })
+                .setCancelable(false)
                 .create().show();
     }
 

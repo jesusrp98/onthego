@@ -64,9 +64,10 @@ public class ShoppingListActivity extends AppCompatActivity {
                 try {
                     final String paymentDetails = confirmation.toJSONObject().toString(4);
 
-                    startActivity(new Intent(this, ShoppingDoneActivity.class)
+                    startActivity(new Intent(this, MainActivity.class)
                             .putExtra("paymentDetails", paymentDetails)
-                            .putExtra("paymentAmount", String.valueOf(AMOUNT)));
+                            .putExtra("paymentAmount", String.valueOf(AMOUNT) + "€")
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
