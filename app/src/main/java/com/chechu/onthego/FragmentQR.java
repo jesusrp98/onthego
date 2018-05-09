@@ -14,11 +14,11 @@ public class FragmentQR extends Fragment {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_qr, container, false);
 
-        //ui init
         final ImageView qr = view.findViewById(R.id.qr);
         final TextView welcomeTextView = view.findViewById(R.id.qr_welcome);
 
-        welcomeTextView.setText(String.format(getString(R.string.display_welcome_screen), this.getArguments().getString("userName")));
+        welcomeTextView.setText(String.format(getString(R.string.display_welcome_screen),
+                this.getArguments().getString("userName")));
 
         qr.setOnClickListener(new View.OnClickListener() {
             @Override

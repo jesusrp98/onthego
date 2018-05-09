@@ -101,7 +101,6 @@ public class ShoppingListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onBackPressed() {
         quitDialog();

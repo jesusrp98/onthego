@@ -23,6 +23,7 @@
     <string name="dialog_tutorial_title">Welcome to OnTheGo</string>
     <string name="dialog_tutorial_body">Would you like to do a tutorial about the OnTheGo experience?</string>
 
+    <string name="dialog_done_purchase_title">Purchase info</string>
     <string name="dialog_purchase_title">Purchase done!</string>
     <string name="dialog_purchase_body">Payment ID: %1s. Status: %2s. Amount %3s.</string>
 
@@ -35,6 +36,8 @@
     <string name="display_scan_qr">Scan QR code to start shopping</string>
     <string name="display_welcome_screen">Welcome back to OnTheGo, %1s!</string>
     <string name="display_paypal_message">OnTheGo\'s shopping cart</string>
+    <string name="display_consumible_price">Price: %f</string>
+    <string name="display_consumible_amount">Quantity: %f</string>
 
     <string name="error_account">Can\'t connect to servers</string>
 

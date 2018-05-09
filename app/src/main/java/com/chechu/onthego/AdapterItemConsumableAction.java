@@ -1,6 +1,7 @@
 package com.chechu.onthego;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterItemConsumableAction.ViewHolder> {
-    private ArrayList<ItemConsumable> itemList;
+    private ArrayList<ItemConsumableAction> itemList;
+    private TypedArray idArray;
     private Context context;
 
     AdapterItemConsumableAction(Context context) {
-        itemList = getItems();
-        this.context = context;
+        this.idArray = context.getResources().obtainTypedArray(R.array.icon_view);
+        this.itemList = new ArrayList<>();
     }
 
     @Override
@@ -25,27 +27,11 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final ItemConsumable item = itemList.get(position);
+        final ItemConsumableAction item = itemList.get(position);
 
-        //set data to result item
-        holder.photo.setImageDrawable(item.getPhoto());
-        holder.title.setText(item.getName());
-        holder.description.setText(item.getDescription());
-    }
-
-    private static ArrayList<ItemConsumable> getItems() {
-        final ArrayList<ItemConsumable> arrayList = new ArrayList<>();
-
-        arrayList.add(new ItemConsumable("Lechuga", "Es verde"));
-        arrayList.add(new ItemConsumable("Cocholate", "Color mierda"));
-        arrayList.add(new ItemConsumable("Platano", "¡Corre!"));
-        arrayList.add(new ItemConsumable("Coco", "Como la peli"));
-        arrayList.add(new ItemConsumable("Lejia", "Chupitazo"));
-        arrayList.add(new ItemConsumable("Manzana", "Roja || Verde"));
-        arrayList.add(new ItemConsumable("Cocretas", "De cocido"));
-        arrayList.add(new ItemConsumable("Mataratas", "Pa la topasio"));
-
-        return  arrayList;
+        holder.consumableIcon.setImageDrawable(item.getConsumiblePhoto());
+        holder.consumableTitle.setText(item.getConsumibleName());
+        holder.consumableDescription.setText(String.format(context.getString(R.string.display_consumible_amount), item.getQuantity()));
     }
 
     @Override
@@ -54,16 +40,16 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView photo;
-        private final TextView title;
-        private final TextView description;
+        private final ImageView consumableIcon;
+        private final TextView consumableTitle;
+        private final TextView consumableDescription;
 
         private ViewHolder(View itemView) {
             super(itemView);
-            //get item id for cache
-            photo = itemView.findViewById(R.id.consumableIcon);
-            title = itemView.findViewById(R.id.consumableTitle);
-            description = itemView.findViewById(R.id.consumableDescription);
+
+            consumableIcon = itemView.findViewById(R.id.consumableIcon);
+            consumableTitle = itemView.findViewById(R.id.consumableTitle);
+            consumableDescription = itemView.findViewById(R.id.consumableDescription);
         }
     }
 }

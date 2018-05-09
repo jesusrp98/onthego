@@ -3,37 +3,31 @@ package com.chechu.onthego;
 import android.graphics.drawable.Drawable;
 
 class ItemConsumable {
-    private Drawable photo;
-    private String name;
-    private String description;
+    private Drawable consumiblePhoto;
+    private long consumibleId;
+    private String consumibleName;
+    private double consumiblePrice;
 
-    public ItemConsumable(String name, String description) {
-        this.photo = photo;
-        this.name = name;
-        this.description = description;
+    public ItemConsumable(Drawable consumiblePhoto, int consumibleId, String consumibleName, double consumiblePrice) {
+        this.consumiblePhoto = consumiblePhoto;
+        this.consumibleId = consumibleId;
+        this.consumibleName = consumibleName;
+        this.consumiblePrice = consumiblePrice;
     }
 
-    public Drawable getPhoto() {
-        return photo;
+    public long getConsumibleId() {
+        return consumibleId;
     }
 
-    public void setPhoto(Drawable photo) {
-        this.photo = photo;
+    public Drawable getConsumiblePhoto() {
+        return consumiblePhoto;
     }
 
-    public String getName() {
-        return name;
+    public String getConsumibleName() {
+        return consumibleName;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public double getConsumiblePrice() {
+        return consumiblePrice;
     }
 }

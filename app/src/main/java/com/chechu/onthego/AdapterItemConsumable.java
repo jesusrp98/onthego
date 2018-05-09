@@ -1,6 +1,7 @@
 package com.chechu.onthego;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,12 @@ import java.util.ArrayList;
 
 public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsumable.ViewHolder> {
     private ArrayList<ItemConsumable> itemList;
+    private TypedArray idArray;
     private Context context;
 
     AdapterItemConsumable(Context context) {
-        itemList = getItems();
+        this.idArray = context.getResources().obtainTypedArray(R.array.icon_view);
+        this.itemList = getItems();
         this.context = context;
     }
 
@@ -27,23 +30,16 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
     public void onBindViewHolder(ViewHolder holder, int position) {
         final ItemConsumable item = itemList.get(position);
 
-        //set data to result item
-        holder.photo.setImageDrawable(item.getPhoto());
-        holder.title.setText(item.getName());
-        holder.description.setText(item.getDescription());
+        holder.consumiblePhoto.setImageDrawable(item.getConsumiblePhoto());
+        holder.consumibleTitle.setText(item.getConsumibleName());
+        holder.consumableQuantity.setText(String.format(context.getString(R.string.display_consumible_price), item.getConsumiblePrice()));
     }
 
+    //TODO realizar las requests a la bd
     private static ArrayList<ItemConsumable> getItems() {
         final ArrayList<ItemConsumable> arrayList = new ArrayList<>();
 
-        arrayList.add(new ItemConsumable("Lechuga", "Es verde"));
-        arrayList.add(new ItemConsumable("Cocholate", "Color mierda"));
-        arrayList.add(new ItemConsumable("Platano", "¡Corre!"));
-        arrayList.add(new ItemConsumable("Coco", "Como la peli"));
-        arrayList.add(new ItemConsumable("Lejia", "Chupitazo"));
-        arrayList.add(new ItemConsumable("Manzana", "Roja || Verde"));
-        arrayList.add(new ItemConsumable("Cocretas", "De cocido"));
-        arrayList.add(new ItemConsumable("Mataratas", "Pa la topasio"));
+        //
 
         return  arrayList;
     }
@@ -54,16 +50,16 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView photo;
-        private final TextView title;
-        private final TextView description;
+        private final ImageView consumiblePhoto;
+        private final TextView consumibleTitle;
+        private final TextView consumableQuantity;
 
         private ViewHolder(View itemView) {
             super(itemView);
-            //get item id for cache
-            photo = itemView.findViewById(R.id.consumableIcon);
-            title = itemView.findViewById(R.id.consumableTitle);
-            description = itemView.findViewById(R.id.consumableDescription);
+
+            consumiblePhoto = itemView.findViewById(R.id.consumableIcon);
+            consumibleTitle = itemView.findViewById(R.id.consumableTitle);
+            consumableQuantity = itemView.findViewById(R.id.consumableDescription);
         }
     }
 }
