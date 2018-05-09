@@ -16,7 +16,7 @@ public class AdapterItemConsumable extends ArrayAdapter<ItemConsumable> implemen
     private Context context;
 
     AdapterItemConsumable(Context context) {
-        super(context, R.layout.item_consumable);
+        super(context, R.layout.item_consumable, getItems());
         this.context = context;
     }
 
@@ -38,18 +38,34 @@ public class AdapterItemConsumable extends ArrayAdapter<ItemConsumable> implemen
             viewHolder = new ViewHolder();
 
             //get item id
-            //viewHolder.iconView = convertView.findViewById(R.id.item_operation_icon);
-            //viewHolder.titleView = convertView.findViewById(R.id.item_operation_title);
-            //viewHolder.descriptionView = convertView.findViewById(R.id.item_operation_description);
+            viewHolder.iconView = convertView.findViewById(R.id.consumableIcon);
+            viewHolder.titleView = convertView.findViewById(R.id.consumableTitle);
+            viewHolder.descriptionView = convertView.findViewById(R.id.consumableDescription);
 
             convertView.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) convertView.getTag();
 
         //assign objects to viewholder
-        //viewHolder.titleView.setText(itemOperation.getTitle());
-        //viewHolder.descriptionView.setText(Html.fromHtml(itemOperation.getDescription()));
+        //viewHolder.iconView.setImageDrawable(itemConsumable.getPhoto());
+        viewHolder.titleView.setText(itemConsumable.getName());
+        viewHolder.descriptionView.setText(itemConsumable.getDescription());
 
         return convertView;
+    }
+
+    private static ArrayList<ItemConsumable> getItems() {
+        final ArrayList<ItemConsumable> arrayList = new ArrayList<>();
+
+        arrayList.add(new ItemConsumable("Lechuga", "Es verde"));
+        arrayList.add(new ItemConsumable("Cocholate", "Color mierda"));
+        arrayList.add(new ItemConsumable("Platano", "¡Corre!"));
+        arrayList.add(new ItemConsumable("Coco", "Como la peli"));
+        arrayList.add(new ItemConsumable("Lejia", "Chupitazo"));
+        arrayList.add(new ItemConsumable("Manzana", "Roja || Verde"));
+        arrayList.add(new ItemConsumable("Cocretas", "De bechamel"));
+        arrayList.add(new ItemConsumable("Mataratas", "Pa la topasio"));
+
+        return  arrayList;
     }
 }

@@ -1,4 +1,4 @@
-package com.chechu.onthego;
+/*package com.chechu.onthego;
 
 public class ItemConsumableAction extends ItemConsumable{
-}
+}*/
