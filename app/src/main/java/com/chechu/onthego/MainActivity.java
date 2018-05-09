@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void initViewPager() {
         final String[] titleArray = getResources().getStringArray(R.array.display_maintab);
-        final Fragment[] fragments = { new FragmentRecommended(), new FragmentQR(), new FragmentShopping() };
+        final Fragment[] fragments = { new FragmentRecommended(), new FragmentQR(), new FragmentPurchases() };
         final AdapterTabLayout adapter = new AdapterTabLayout(getSupportFragmentManager());
 
         //add userName to QR fragment

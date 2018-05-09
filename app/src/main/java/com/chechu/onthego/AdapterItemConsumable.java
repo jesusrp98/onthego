@@ -1,57 +1,36 @@
 package com.chechu.onthego;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 
-public class AdapterItemConsumable extends ArrayAdapter<ItemConsumable> implements Filterable {
-    private ArrayList<ItemConsumable> auxItemList;
+public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsumable.ViewHolder> {
+    private ArrayList<ItemConsumable> itemList;
     private Context context;
 
     AdapterItemConsumable(Context context) {
-        super(context, R.layout.item_consumable, getItems());
+        itemList = getItems();
         this.context = context;
     }
 
-    //view holder cache
-    private static class ViewHolder {
-        ImageView iconView;
-        TextView titleView;
-        TextView descriptionView;
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_consumable_card, parent, false));
     }
 
-    @NonNull
     @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        final ItemConsumable itemConsumable = getItem(position);
-        final ViewHolder viewHolder;
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        final ItemConsumable item = itemList.get(position);
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_consumable, parent, false);
-            viewHolder = new ViewHolder();
-
-            //get item id
-            viewHolder.iconView = convertView.findViewById(R.id.consumableIcon);
-            viewHolder.titleView = convertView.findViewById(R.id.consumableTitle);
-            viewHolder.descriptionView = convertView.findViewById(R.id.consumableDescription);
-
-            convertView.setTag(viewHolder);
-        } else
-            viewHolder = (ViewHolder) convertView.getTag();
-
-        //assign objects to viewholder
-        //viewHolder.iconView.setImageDrawable(itemConsumable.getPhoto());
-        viewHolder.titleView.setText(itemConsumable.getName());
-        viewHolder.descriptionView.setText(itemConsumable.getDescription());
-
-        return convertView;
+        //set data to result item
+        holder.photo.setImageDrawable(item.getPhoto());
+        holder.title.setText(item.getName());
+        holder.description.setText(item.getDescription());
     }
 
     private static ArrayList<ItemConsumable> getItems() {
@@ -63,9 +42,28 @@ public class AdapterItemConsumable extends ArrayAdapter<ItemConsumable> implemen
         arrayList.add(new ItemConsumable("Coco", "Como la peli"));
         arrayList.add(new ItemConsumable("Lejia", "Chupitazo"));
         arrayList.add(new ItemConsumable("Manzana", "Roja || Verde"));
-        arrayList.add(new ItemConsumable("Cocretas", "De bechamel"));
+        arrayList.add(new ItemConsumable("Cocretas", "De cocido"));
         arrayList.add(new ItemConsumable("Mataratas", "Pa la topasio"));
 
         return  arrayList;
+    }
+
+    @Override
+    public int getItemCount() {
+        return itemList.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView photo;
+        private final TextView title;
+        private final TextView description;
+
+        private ViewHolder(View itemView) {
+            super(itemView);
+            //get item id for cache
+            photo = itemView.findViewById(R.id.consumableIcon);
+            title = itemView.findViewById(R.id.consumableTitle);
+            description = itemView.findViewById(R.id.consumableDescription);
+        }
     }
 }

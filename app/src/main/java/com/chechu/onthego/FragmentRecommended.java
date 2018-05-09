@@ -2,6 +2,8 @@ package com.chechu.onthego;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +14,11 @@ public class FragmentRecommended extends Fragment {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_recommended, container, false);
 
-        final ListView listView = view.findViewById(R.id.listView);
-        final AdapterItemConsumable adapter = new AdapterItemConsumable(getContext());
+        final RecyclerView recyclerView = view.findViewById(R.id.recommendedRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
 
-        listView.setAdapter(adapter);
+        recyclerView.setAdapter(new AdapterItemConsumable(getContext()));
 
         return view;
     }

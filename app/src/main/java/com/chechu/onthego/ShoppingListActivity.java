@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +42,12 @@ public class ShoppingListActivity extends AppCompatActivity {
         startService(intent);
 
         //ui init
+        final RecyclerView recyclerView = findViewById(R.id.shoppingRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setHasFixedSize(true);
+
+        recyclerView.setAdapter(new AdapterItemConsumableAction(getApplicationContext()));
+
         final FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
