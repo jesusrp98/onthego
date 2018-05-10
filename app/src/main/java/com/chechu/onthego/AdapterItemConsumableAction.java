@@ -15,10 +15,10 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
     private TypedArray idArray;
     private Context context;
 
-    AdapterItemConsumableAction(Context context) {
-        this.context = context;
+    AdapterItemConsumableAction(Context context, ArrayList<ItemConsumableAction> arrayList) {
         this.idArray = context.getResources().obtainTypedArray(R.array.icon_view);
-        this.itemList = new ArrayList<>();
+        this.itemList = arrayList;
+        this.context = context;
     }
 
     @Override
@@ -33,12 +33,8 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
         //set info to ui
         holder.consumableIcon.setImageDrawable(item.getConsumiblePhoto());
         holder.consumableTitle.setText(item.getConsumibleName());
-        holder.consumableDescription.setText(String.format(context.getString(R.string.display_consumible_amount), item.getQuantity()));
-    }
-
-    //TODO realizar las requests a la bd
-    private static void addItem() {
-        //
+        holder.consumableAmount.setText(String.format(context.getString(R.string.display_consumible_amount), item.getQuantity()));
+        holder.consumablePrice.setText(String.format(context.getString(R.string.display_consumible_price), item.getQuantity()));
     }
 
     @Override
@@ -50,14 +46,16 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
     class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView consumableIcon;
         private final TextView consumableTitle;
-        private final TextView consumableDescription;
+        private final TextView consumableAmount;
+        private final TextView consumablePrice;
 
         private ViewHolder(View itemView) {
             super(itemView);
 
             consumableIcon = itemView.findViewById(R.id.consumableIcon);
             consumableTitle = itemView.findViewById(R.id.consumableTitle);
-            consumableDescription = itemView.findViewById(R.id.consumableDescription);
+            consumableAmount = itemView.findViewById(R.id.consumableAmount);
+            consumablePrice = itemView.findViewById(R.id.consumablePrice);
         }
     }
 }

@@ -4,6 +4,12 @@
     tools:context="com.chechu.onthego.ShoppingListActivity">
 
     <item
+        android:id="@+id/action_catalog"
+        android:orderInCategory="100"
+        android:title="@string/action_catalog"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_quit_shopping"
         android:orderInCategory="100"
         android:title="@string/action_quit_shopping"

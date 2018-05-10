@@ -1,51 +1,63 @@
 package com.chechu.onthego;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class FragmentRecommended extends Fragment {
+public class CatalogueActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_recommended, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_catalogue);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        recyclerView = view.findViewById(R.id.recommendedRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView = findViewById(R.id.catalogueRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setHasFixedSize(true);
 
-        setAdapter();
+        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //
+            }
+        });
 
-        return view;
+        setAdapter();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+            onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 
     private void setAdapter() {
-        final String URL = "http://onthego.myddns.me:8000/get_productos_top";
+        final String URL = "http://onthego.myddns.me:8000/get_productos";
         final ArrayList<ItemConsumable> arrayList = new ArrayList<>();
 
-        final RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getContext()));
+        final RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getApplication()));
         final JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -53,7 +65,7 @@ public class FragmentRecommended extends Fragment {
                         try {
                             for(int i = 0; i < response.length(); ++i)
                                 arrayList.add(new ItemConsumable(response.getJSONObject(i)));
-                            recyclerView.setAdapter(new AdapterItemConsumable(getContext(), arrayList));
+                            recyclerView.setAdapter(new AdapterItemConsumable(getApplicationContext(), arrayList));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -62,7 +74,7 @@ public class FragmentRecommended extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), R.string.error_account, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.error_account, Toast.LENGTH_LONG).show();
                     }
                 }
         );

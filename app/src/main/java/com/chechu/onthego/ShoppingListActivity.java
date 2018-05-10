@@ -46,7 +46,8 @@ public class ShoppingListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setAdapter(new AdapterItemConsumableAction(getApplicationContext()));
+        //TODO hacer el adaptador vinculacion con view
+        //recyclerView.setAdapter(new AdapterItemConsumableAction(getApplicationContext()));
 
         final FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +96,10 @@ public class ShoppingListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_quit_shopping:
                 quitDialog();
+                break;
+
+            case R.id.action_catalog:
+                startActivity(new Intent(this, CatalogueActivity.class));
                 break;
         }
 

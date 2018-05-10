@@ -24,12 +24,15 @@ import com.google.android.gms.common.api.Status;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private GoogleApiClient googleApiClient;
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
+    private String userId;
     private String userName;
     private String userEmail;
     private String userPhoto;
@@ -118,9 +121,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
+            userId = Objects.requireNonNull(result.getSignInAccount()).getId();
             userName = result.getSignInAccount().getDisplayName();
             userEmail = result.getSignInAccount().getEmail();
-            userPhoto = result.getSignInAccount().getPhotoUrl().toString();
+            userPhoto = Objects.requireNonNull(result.getSignInAccount().getPhotoUrl()).toString();
             initViewPager();
 
         } else
@@ -180,11 +184,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         final String[] titleArray = getResources().getStringArray(R.array.display_maintab);
         final Fragment[] fragments = { new FragmentRecommended(), new FragmentQR(), new FragmentPurchases() };
         final AdapterTabLayout adapter = new AdapterTabLayout(getSupportFragmentManager());
+        final Bundle bundles[] = {new Bundle(), new Bundle()};
 
-        //add userName to QR fragment
-        final Bundle bundle = new Bundle();
-        bundle.putString("userName", userName);
-        fragments[1].setArguments(bundle);
+        bundles[0].putString("userName", userName);
+        fragments[1].setArguments(bundles[0]);
+
+        bundles[1].putString("id", userId);
+        fragments[2].setArguments(bundles[1]);
 
         //add fragments to fragment adapter
         for (int i = 0; i < 3; i++)
@@ -194,5 +200,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(1);
+        viewPager.setOffscreenPageLimit(3);
     }
 }

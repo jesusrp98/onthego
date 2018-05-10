@@ -11,13 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AdapterItemPurchase extends ArrayAdapter<ItemPurchase> {
-    private Context context;
-
-    AdapterItemPurchase(Context context) {
-        super(context, R.layout.item_purchase, getItems());
-        this.context = context;
+    AdapterItemPurchase(Context context, ArrayList<ItemPurchase> arrayList) {
+        super(context, R.layout.item_purchase, arrayList);
     }
 
     @NonNull
@@ -27,7 +25,7 @@ public class AdapterItemPurchase extends ArrayAdapter<ItemPurchase> {
         final ViewHolder viewHolder;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_purchase, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_purchase, parent, false);
             viewHolder = new ViewHolder();
 
             viewHolder.iconView = convertView.findViewById(R.id.item_purchase_icon);
@@ -40,22 +38,14 @@ public class AdapterItemPurchase extends ArrayAdapter<ItemPurchase> {
 
         //assign objects to viewholder
         viewHolder.iconView.setImageDrawable(
-                TextDrawable.builder().beginConfig().textColor(context.getResources().getColor(android.R.color.white))
-                        .endConfig().buildRound("#" + itemPurchase.getId(), context.getResources().getColor(R.color.colorAccent))
+                TextDrawable.builder().beginConfig().textColor(getContext().getResources().getColor(android.R.color.white))
+                        .endConfig().buildRound("#" + Objects.requireNonNull(itemPurchase).getCardinal(),
+                        getContext().getResources().getColor(R.color.colorAccent))
         );
         viewHolder.titleView.setText(itemPurchase.getId());
-        viewHolder.descriptionView.setText(Html.fromHtml(itemPurchase.getDate()));
+        viewHolder.descriptionView.setText(String.format(getContext().getString(R.string.dialog_purchase_date), itemPurchase.getDate()));
 
         return convertView;
-    }
-
-    //TODO conseguir las compras de un user
-    private static ArrayList<ItemPurchase> getItems() {
-        final ArrayList<ItemPurchase> aux = new ArrayList<>();
-
-        //
-
-        return aux;
     }
 
     //view holder cache

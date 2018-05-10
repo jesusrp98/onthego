@@ -2,9 +2,12 @@ package com.chechu.onthego;
 
 import android.graphics.drawable.Drawable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 class ItemConsumable {
     private Drawable consumiblePhoto;
-    private long consumibleId;
+    private int consumibleId;
     private String consumibleName;
     private double consumiblePrice;
 
@@ -15,7 +18,18 @@ class ItemConsumable {
         this.consumiblePrice = consumiblePrice;
     }
 
-    public long getConsumibleId() {
+    public ItemConsumable(int consumibleId, String consumibleName) {
+        this.consumibleId = consumibleId;
+        this.consumibleName = consumibleName;
+    }
+
+    public ItemConsumable(JSONObject object) throws JSONException {
+        this.consumibleId = object.getInt("id");
+        this.consumibleName = object.getString("nombre");
+        this.consumiblePrice = object.getDouble("precio");
+    }
+
+    public int getConsumibleId() {
         return consumibleId;
     }
 

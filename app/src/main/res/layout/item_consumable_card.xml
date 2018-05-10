@@ -9,6 +9,9 @@
     android:layout_marginTop="8dp"
     android:elevation="8dp">
 
-    <include layout="@layout/item_consumable"/>
+    <include layout="@layout/item_consumable"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="16dp"/>
 
 </android.support.v7.widget.CardView>
