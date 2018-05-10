@@ -6,8 +6,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 public class AboutActivity extends AppCompatActivity {
-
-    //TODO hacer esta actividad
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

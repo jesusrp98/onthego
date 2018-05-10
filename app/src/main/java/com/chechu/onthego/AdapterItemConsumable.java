@@ -30,6 +30,7 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
     public void onBindViewHolder(ViewHolder holder, int position) {
         final ItemConsumable item = itemList.get(position);
 
+        //set info to ui
         holder.consumiblePhoto.setImageDrawable(item.getConsumiblePhoto());
         holder.consumibleTitle.setText(item.getConsumibleName());
         holder.consumableQuantity.setText(String.format(context.getString(R.string.display_consumible_price), item.getConsumiblePrice()));
@@ -49,6 +50,7 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
         return itemList.size();
     }
 
+    //save xml ui into to cache
     class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView consumiblePhoto;
         private final TextView consumibleTitle;

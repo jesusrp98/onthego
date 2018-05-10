@@ -16,6 +16,7 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
     private Context context;
 
     AdapterItemConsumableAction(Context context) {
+        this.context = context;
         this.idArray = context.getResources().obtainTypedArray(R.array.icon_view);
         this.itemList = new ArrayList<>();
     }
@@ -29,9 +30,15 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
     public void onBindViewHolder(ViewHolder holder, int position) {
         final ItemConsumableAction item = itemList.get(position);
 
+        //set info to ui
         holder.consumableIcon.setImageDrawable(item.getConsumiblePhoto());
         holder.consumableTitle.setText(item.getConsumibleName());
         holder.consumableDescription.setText(String.format(context.getString(R.string.display_consumible_amount), item.getQuantity()));
+    }
+
+    //TODO realizar las requests a la bd
+    private static void addItem() {
+        //
     }
 
     @Override
@@ -39,6 +46,7 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
         return itemList.size();
     }
 
+    //save xml ui into to cache
     class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView consumableIcon;
         private final TextView consumableTitle;

@@ -1,47 +1,42 @@
 <resources>
     <string name="app_name">OnTheGo</string>
 
-    <string name="activity_login">Log In</string>
-    <string name="activity_profile">My account</string>
-    <string name="activity_shopping">Shopping Cart</string>
-    <string name="activity_about">About OnTheGo</string>
+    <string name="activity_login">Registro de cuenta</string>
+    <string name="activity_profile">Mi perfil</string>
+    <string name="activity_shopping">Carrito de la compra</string>
+    <string name="activity_about">Información</string>
 
-    <string name="action_account">My account</string>
-    <string name="action_logout">Log out</string>
-    <string name="action_about">About</string>
-    <string name="action_quit_shopping">Quit shopping</string>
-    <string name="action_delete">DELETE</string>
-    <string name="action_edit">EDIT</string>
-    <string name="action_later">LATER</string>
+    <string name="action_account">Mi perfil</string>
+    <string name="action_logout">Cerrar sesión</string>
+    <string name="action_about">Información</string>
+    <string name="action_quit_shopping">Parar de comprar</string>
+    <string name="action_delete">BORRAR</string>
+    <string name="action_edit">EDITAR</string>
 
-    <string name="dialog_logout_title">Log out</string>
-    <string name="dialog_logout_body">Are you sure you want to log out?</string>
+    <string name="dialog_logout_title">Cerrar sesión</string>
+    <string name="dialog_logout_body">¿Está usted seguro de que desea cerrar sesión? Podrá volver a iniciar sesión más tarde.</string>
 
-    <string name="dialog_shopping_title">Stop shopping</string>
-    <string name="dialog_shopping_body">Are you sure you want to stop shopping?</string>
+    <string name="dialog_shopping_title">Parar de comprar</string>
+    <string name="dialog_shopping_body">¿Está usted completamente seguro de que desea parar de comprar?</string>
 
-    <string name="dialog_tutorial_title">Welcome to OnTheGo</string>
-    <string name="dialog_tutorial_body">Would you like to do a tutorial about the OnTheGo experience?</string>
-
-    <string name="dialog_done_purchase_title">Purchase info</string>
-    <string name="dialog_purchase_title">Purchase done!</string>
-    <string name="dialog_purchase_body">Payment ID: %1s. Status: %2s. Amount %3s.</string>
+    <string name="dialog_purchase_title">Info. de la compra</string>
+    <string name="dialog_purchase_body">¡Muchas gracias por confiar en OnTheGo!\n\nAquí tiene la información de la compra\nID de pago: %1s\nEstado del pago: %2s\nPrecio total: %3s\n\n¡Vuelva cuando quiera!</string>
 
     <string-array name="display_maintab">
-        <item>RECOMMENDED</item>
-        <item>QR CODE</item>
-        <item>LAST SHOPPINGS</item>
+        <item>RECOMENDADOS</item>
+        <item>CODIGO QR</item>
+        <item>ULTIMAS COMPRAS</item>
     </string-array>
 
-    <string name="display_scan_qr">Scan QR code to start shopping</string>
-    <string name="display_welcome_screen">Welcome back to OnTheGo, %1s!</string>
-    <string name="display_paypal_message">OnTheGo\'s shopping cart</string>
-    <string name="display_consumible_price">Price: %f</string>
-    <string name="display_consumible_amount">Quantity: %f</string>
+    <string name="display_welcome_title">¡Bienvenido a OnTheGo!</string>
+    <string name="display_welcome_body">Para empezar a comprar de forma inteligente, inicie sesión con su cuenta de Google</string>
+    <string name="display_scan_qr">Para comenzar a comprar, escanee el código QR en los terminales a la entrada del establecimiento</string>
+    <string name="display_welcome_screen">¿Está listo para empezar a comprar, %1s?</string>
+    <string name="display_paypal_message">Carrito de la compra</string>
+    <string name="display_consumible_price">Precio: %f€</string>
+    <string name="display_consumible_amount">Cantidad: %f</string>
+    <string name="display_account_sex">Sexo: Hombre</string>
+    <string name="display_account_info">Esta aplicación NO guarda ningún tipo de información que pueda comprometer la información privada del usuario</string>
 
-    <string name="error_account">Can\'t connect to servers</string>
-
-    <string name="key_tutorial">key_tutorial</string>
-    <string name="key_login">key_login</string>
-    <string name="key_user_token">key_user_token</string>
+    <string name="error_account">No se ha podido establecer la conexión</string>
 </resources>

@@ -18,12 +18,13 @@ public class FragmentPurchases extends Fragment {
         final ListView listView = view.findViewById(R.id.purchases_listview);
         final AdapterItemPurchase adapter = new AdapterItemPurchase(getActivity());
 
+        //display dialog with purchase info
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final ItemPurchase item = (ItemPurchase) parent.getItemAtPosition(position);
                 new AlertDialog.Builder(getActivity())
-                        .setTitle(R.string.dialog_done_purchase_title)
+                        .setTitle(R.string.dialog_purchase_title)
                         .setMessage(String.format(getString(R.string.dialog_purchase_body), item.getId(), item.getId(), item.getId()))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {

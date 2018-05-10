@@ -2,9 +2,7 @@ package com.chechu.onthego;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -124,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             userEmail = result.getSignInAccount().getEmail();
             userPhoto = result.getSignInAccount().getPhotoUrl().toString();
             initViewPager();
-            checkTutorial();
+
         } else
             gotoLogin();
     }
@@ -196,27 +194,5 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(1);
-    }
-
-    private void checkTutorial() {
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sharedPreferences.getBoolean(getString(R.string.key_tutorial), false)) {
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.dialog_tutorial_title)
-                    .setMessage(R.string.dialog_tutorial_body)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            sharedPreferences.edit().putBoolean(getString(R.string.key_tutorial), true).apply();
-                            dialog.dismiss();
-                        }
-                    })
-                    .setNegativeButton(getString(R.string.action_later), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create().show();
-        }
     }
 }
