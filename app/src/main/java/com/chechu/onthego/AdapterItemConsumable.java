@@ -15,12 +15,14 @@ import java.util.ArrayList;
 
 public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsumable.ViewHolder> implements Filterable{
     private ArrayList<ItemConsumable> itemList;
+    private ArrayList<ItemConsumable> constItemList;
     private TypedArray photoArray;
     private Context context;
 
     AdapterItemConsumable(Context context, ArrayList<ItemConsumable> itemConsumables) {
         this.photoArray = context.getResources().obtainTypedArray(R.array.icon_view);
         this.itemList = itemConsumables;
+        this.constItemList = itemConsumables;
         this.context = context;
     }
 
@@ -35,7 +37,7 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
         final ItemConsumable item = itemList.get(position);
 
         //set info to ui
-        holder.consumiblePhoto.setImageDrawable(photoArray.getDrawable(item.getConsumibleId()));
+        holder.consumiblePhoto.setImageResource(photoArray.getResourceId(item.getConsumibleId() - 1, -1));
         holder.consumibleTitle.setText(item.getConsumibleName());
         holder.consumableQuantity.setText(String.format(context.getString(R.string.display_consumible_price), item.getConsumiblePrice()));
     }
@@ -69,7 +71,7 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
             @SuppressWarnings("unchecked")
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 itemList.clear();
-                itemList.addAll((ArrayList<ItemConsumable>)results.values);
+                itemList.addAll((ArrayList<ItemConsumable>) results.values);
                 notifyDataSetChanged();
             }
 
@@ -81,10 +83,11 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
 
                 //checks if search textbox is empty
                 if (string.isEmpty()) {
-                    results.count = itemList.size();
-                    results.values = itemList;
+                    results.count = constItemList.size();
+                    results.values = constItemList;
                 } else {
-                    for (ItemConsumable item : itemList) {
+                    //TODO revisar esto
+                    for (ItemConsumable item : constItemList) {
                         if (item.getConsumibleName().toLowerCase().contains(string))
                             filteredArrayList.add(item);
                     }

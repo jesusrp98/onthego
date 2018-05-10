@@ -28,6 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_search" />
+        app:srcCompat="@drawable/ic_search"
+        android:onClick="fabClickListener"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
 
 </android.support.design.widget.CoordinatorLayout>
