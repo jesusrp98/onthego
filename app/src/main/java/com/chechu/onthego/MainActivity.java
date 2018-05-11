@@ -56,17 +56,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         //display purchase dialog if exists
         final Intent intent = getIntent();
-        try {
-            final String paymentDetails = intent.getStringExtra("paymentDetails");
-            if (paymentDetails != null) {
-                final JSONObject purchase = new JSONObject(paymentDetails).getJSONObject("response");
-
-                purchaseDialog(purchase.getString("id"), purchase.getString("state")
-                        , intent.getStringExtra("paymentAmount"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        if (intent.getStringExtra("id") != null)
+            purchaseDialog(intent.getStringExtra("id"), intent.getStringExtra("items"),
+                    intent.getStringExtra("amount"));
     }
 
     @Override
@@ -150,10 +142,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .create().show();
     }
 
-    private void purchaseDialog(String id, String status, String amount) {
+    private void purchaseDialog(String id, String items, String amount) {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_purchase_title)
-                .setMessage(String.format(getString(R.string.dialog_purchase_body), id, status, amount))
+                .setMessage(String.format(getString(R.string.dialog_purchase_body), id, items, amount))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();

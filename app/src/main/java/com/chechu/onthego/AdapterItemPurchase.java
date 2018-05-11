@@ -2,7 +2,6 @@ package com.chechu.onthego;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,7 @@ public class AdapterItemPurchase extends ArrayAdapter<ItemPurchase> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_purchase, parent, false);
             viewHolder = new ViewHolder();
 
+            //find view items by id
             viewHolder.iconView = convertView.findViewById(R.id.item_purchase_icon);
             viewHolder.titleView = convertView.findViewById(R.id.item_purchase_title);
             viewHolder.descriptionView = convertView.findViewById(R.id.item_purchase_description);

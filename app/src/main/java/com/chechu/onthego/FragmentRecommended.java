@@ -14,14 +14,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -32,6 +27,7 @@ public class FragmentRecommended extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_recommended, container, false);
 
+        //ui init
         recyclerView = view.findViewById(R.id.recommendedRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
@@ -45,6 +41,7 @@ public class FragmentRecommended extends Fragment {
         final String URL = "http://onthego.myddns.me:8000/get_productos_top";
         final ArrayList<ItemConsumable> arrayList = new ArrayList<>();
 
+        //api rest request
         final RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getContext()));
         final JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONArray>() {
@@ -53,6 +50,7 @@ public class FragmentRecommended extends Fragment {
                         try {
                             for(int i = 0; i < response.length(); ++i)
                                 arrayList.add(new ItemConsumable(response.getJSONObject(i)));
+                            //set recycler & adapter
                             recyclerView.setAdapter(new AdapterItemConsumable(getContext(), arrayList));
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -66,7 +64,6 @@ public class FragmentRecommended extends Fragment {
                     }
                 }
         );
-
         requestQueue.add(arrayRequest);
     }
 }

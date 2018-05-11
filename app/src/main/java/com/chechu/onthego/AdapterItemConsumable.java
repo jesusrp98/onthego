@@ -1,5 +1,6 @@
 package com.chechu.onthego;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
@@ -11,6 +12,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsumable.ViewHolder> implements Filterable{
@@ -32,6 +35,7 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_consumable_card, parent, false));
     }
 
+    @SuppressLint("StringFormatMatches")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final ItemConsumable item = itemList.get(position);
@@ -53,17 +57,18 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
         private final TextView consumibleTitle;
         private final TextView consumableQuantity;
 
-        private ViewHolder(View itemView) {
-            super(itemView);
+        private ViewHolder(View view) {
+            super(view);
 
-            consumiblePhoto = itemView.findViewById(R.id.consumableIcon);
-            consumibleTitle = itemView.findViewById(R.id.consumableTitle);
-            consumableQuantity = itemView.findViewById(R.id.consumablePrice);
+            consumiblePhoto = view.findViewById(R.id.consumableIcon);
+            consumibleTitle = view.findViewById(R.id.consumableTitle);
+            consumableQuantity = view.findViewById(R.id.consumablePrice);
         }
     }
 
     @NonNull
     @Override
+    //TODO la busqueda NO es funcional
     public Filter getFilter() {
         //filters the array adapter when search is activated
         return new Filter() {
@@ -86,7 +91,6 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
                     results.count = constItemList.size();
                     results.values = constItemList;
                 } else {
-                    //TODO revisar esto
                     for (ItemConsumable item : constItemList) {
                         if (item.getConsumibleName().toLowerCase().contains(string))
                             filteredArrayList.add(item);

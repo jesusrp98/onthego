@@ -1,5 +1,6 @@
 package com.chechu.onthego;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,14 +17,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -35,15 +31,15 @@ public class FragmentPurchases extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_purchases, container, false);
         listView = view.findViewById(R.id.purchases_listview);
 
-        //TODO revisar el formato
         //display dialog with purchase info
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @SuppressLint("StringFormatMatches")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final ItemPurchase item = (ItemPurchase) parent.getItemAtPosition(position);
                 new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
                         .setTitle(R.string.dialog_purchase_title)
-                        .setMessage(String.format(getString(R.string.dialog_purchase_body), item.getId(), item.getAmount(), item.getAmount()))
+                        .setMessage(String.format(getString(R.string.dialog_purchase_body), item.getId(), item.getItemsString(), item.getAmount()))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
@@ -62,10 +58,10 @@ public class FragmentPurchases extends Fragment {
     }
 
     private void setAdapter(String id) {
-        //TODO corregir en un futuro la url
-        final String URL = "http://178.62.36.19:8000/get_compras_cliente?id=10017";
+        final String URL = "http://onthego.myddns.me:8000/get_compras_cliente?id=10017";
         final ArrayList<ItemPurchase> arrayList = new ArrayList<>();
 
+        //api rest request
         final RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getContext()));
         final JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONArray>() {
@@ -74,6 +70,7 @@ public class FragmentPurchases extends Fragment {
                         try {
                             for(int i = 0; i < response.length(); ++i)
                                 arrayList.add(new ItemPurchase(i + 1, response.getJSONObject(i)));
+                            //set recycler & adapter
                             listView.setAdapter(new AdapterItemPurchase(getContext(), arrayList));
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -87,7 +84,6 @@ public class FragmentPurchases extends Fragment {
                     }
                 }
         );
-
         requestQueue.add(arrayRequest);
     }
 }

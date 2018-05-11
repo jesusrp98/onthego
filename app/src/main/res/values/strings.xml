@@ -12,6 +12,8 @@
     <string name="action_about">Información</string>
     <string name="action_quit_shopping">Parar de comprar</string>
     <string name="action_catalog">Ver catálogo completo</string>
+    <string name="action_add_product">Añadir producto</string>
+    <string name="action_add_product_random">Producto aleatorio</string>
     <string name="action_delete">BORRAR</string>
     <string name="action_edit">EDITAR</string>
 
@@ -21,8 +23,10 @@
     <string name="dialog_shopping_title">Parar de comprar</string>
     <string name="dialog_shopping_body">¿Está usted completamente seguro de que desea parar de comprar?</string>
 
+    <string name="dialog_add_product_title">Añadir producto</string>
+
     <string name="dialog_purchase_title">Info. de la compra</string>
-    <string name="dialog_purchase_body">¡Muchas gracias por confiar en OnTheGo!\n\nAquí tiene la información de la compra\nID de pago: %s\nEstado del pago: A\nPrecio total: %s€\n\n¡Vuelva cuando quiera!</string>
+    <string name="dialog_purchase_body">¡Muchas gracias por confiar en OnTheGo!\nAquí tiene la información de la compra.\n\n-ID de pago: %s\n\n-Lista de productos:\n%s\n-Precio total: %s€\n\n¡Vuelva cuando quiera!</string>
     <string name="dialog_purchase_date">Fecha: %s</string>
 
     <string-array name="display_maintab">

@@ -4,6 +4,18 @@
     tools:context="com.chechu.onthego.ShoppingListActivity">
 
     <item
+        android:id="@+id/action_add_product"
+        android:orderInCategory="100"
+        android:title="@string/action_add_product"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_add_product_random"
+        android:orderInCategory="100"
+        android:title="@string/action_add_product_random"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_catalog"
         android:orderInCategory="100"
         android:title="@string/action_catalog"

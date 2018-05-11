@@ -43,6 +43,7 @@ public class CatalogueActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        //ui init
         recyclerView = findViewById(R.id.catalogueRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setHasFixedSize(true);
@@ -124,6 +125,7 @@ public class CatalogueActivity extends AppCompatActivity {
         final String URL = "http://onthego.myddns.me:8000/get_productos";
         final ArrayList<ItemConsumable> arrayList = new ArrayList<>();
 
+        //api rest request
         final RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getApplication()));
         final JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONArray>() {
@@ -132,6 +134,7 @@ public class CatalogueActivity extends AppCompatActivity {
                         try {
                             for(int i = 0; i < response.length(); ++i)
                                 arrayList.add(new ItemConsumable(response.getJSONObject(i)));
+                            //set recycler & adapter
                             adapter = new AdapterItemConsumable(getApplicationContext(), arrayList);
                             recyclerView.setAdapter(adapter);
                         } catch (JSONException e) {
@@ -146,7 +149,6 @@ public class CatalogueActivity extends AppCompatActivity {
                     }
                 }
         );
-
         requestQueue.add(arrayRequest);
     }
 }

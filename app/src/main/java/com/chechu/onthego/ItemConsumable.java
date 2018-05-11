@@ -1,7 +1,6 @@
 package com.chechu.onthego;
 
 import android.graphics.drawable.Drawable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

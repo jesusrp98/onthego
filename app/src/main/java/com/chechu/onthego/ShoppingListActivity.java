@@ -1,5 +1,6 @@
 package com.chechu.onthego;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,8 @@ public class ShoppingListActivity extends AppCompatActivity {
     private static PayPalConfiguration configuration;
     private static final int AMOUNT = 1;
 
+    private AdapterItemConsumableAction adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +49,6 @@ public class ShoppingListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setHasFixedSize(true);
 
-        //TODO hacer el adaptador vinculacion con view
-        //recyclerView.setAdapter(new AdapterItemConsumableAction(getApplicationContext()));
-
         final FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +56,10 @@ public class ShoppingListActivity extends AppCompatActivity {
                 checkout();
             }
         });
+
+        //recyclerView & adapter init
+        adapter = new AdapterItemConsumableAction(getApplicationContext());
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -66,16 +70,17 @@ public class ShoppingListActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if payment is SUCCesful
         if (resultCode == RESULT_OK) {
             final PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
 
             if (confirmation != null) {
                 try {
-                    final String paymentDetails = confirmation.toJSONObject().toString(4);
-
+                    //pass payment info to display in MainActivity
                     startActivity(new Intent(this, MainActivity.class)
-                            .putExtra("paymentDetails", paymentDetails)
-                            .putExtra("paymentAmount", String.valueOf(AMOUNT) + "€")
+                            .putExtra("id", confirmation.toJSONObject().getJSONObject("response").getString("id"))
+                            .putExtra("items", adapter.getItemList())
+                            .putExtra("amount", String.valueOf(AMOUNT))
                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -101,6 +106,14 @@ public class ShoppingListActivity extends AppCompatActivity {
             case R.id.action_catalog:
                 startActivity(new Intent(this, CatalogueActivity.class));
                 break;
+
+            case R.id.action_add_product:
+                dialogAddProduct();
+                break;
+
+            case R.id.action_add_product_random:
+                adapter.addRandomItem();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -117,6 +130,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                 .setMessage(R.string.dialog_shopping_body)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        //start MainActivity cleanly
                         startActivity(new Intent(getApplicationContext(), MainActivity.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     }
@@ -130,11 +144,35 @@ public class ShoppingListActivity extends AppCompatActivity {
                 .create().show();
     }
 
+    @SuppressLint("InflateParams")
+    private void dialogAddProduct() {
+        final View dialogView = this.getLayoutInflater().inflate(R.layout.dialog_add_product, null);
+        //TODO hacer addDialog
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_add_product_title)
+                .setView(dialogView)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false)
+                .create().show();
+    }
+
     private void checkout() {
         final Intent intent = new Intent(this, PaymentActivity.class);
         final PayPalPayment payment = new PayPalPayment(new BigDecimal(AMOUNT), "EUR",
                 getString(R.string.display_paypal_message), PayPalPayment.PAYMENT_INTENT_SALE);
 
+        //start paypal checkout activity
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, configuration);
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
         startActivityForResult(intent, PAYPAL_REQUEST_CODE);

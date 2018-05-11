@@ -47,6 +47,13 @@ class ItemPurchase {
         return items;
     }
 
+    public String getItemsString() {
+        String aux = "";
+        for (ItemConsumableAction item : items)
+            aux += " " + item.getConsumibleName() + ": " + item.getQuantity() + " unidades.\n";
+        return aux;
+    }
+
     public double getAmount() {
         return amount;
     }
