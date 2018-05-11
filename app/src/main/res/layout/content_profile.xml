@@ -59,14 +59,13 @@
                         android:layout_marginTop="8dp"
                         android:textColor="?android:textColorSecondary"/>
 
-                    <TextView
-                        android:id="@+id/sexTextView"
+                    <Button
+                        android:id="@+id/telegramButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textSize="14sp"
-                        android:textColor="?android:textColorSecondary"
-                        android:text="@string/display_account_sex"/>
+                        android:text="@string/action_telegram"
+                        android:layout_marginTop="5dp"
+                        style="?buttonBarButtonStyle"/>
 
                 </LinearLayout>
 

@@ -15,21 +15,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
+import org.json.JSONArray;
 import org.json.JSONException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class ShoppingListActivity extends AppCompatActivity {
     private static final String PAYPAL_CLIENT_ID = "AZXq8rssVj9vrxys4mEgAxaoj6WZUdIzCUDTqc7yoh7gD2XB_dErcSf27Z-m0MorfolToVpdfpTCA9lh";
     private static final int PAYPAL_REQUEST_CODE = 7171;
     private static PayPalConfiguration configuration;
-    private static final int AMOUNT = 1;
 
     private AdapterItemConsumableAction adapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +54,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         startService(intent);
 
         //ui init
-        final RecyclerView recyclerView = findViewById(R.id.shoppingRecyclerView);
+        recyclerView = findViewById(R.id.shoppingRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setHasFixedSize(true);
 
@@ -57,9 +66,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             }
         });
 
-        //recyclerView & adapter init
-        adapter = new AdapterItemConsumableAction(getApplicationContext());
-        recyclerView.setAdapter(adapter);
+        setAdapter();
     }
 
     @Override
@@ -80,7 +87,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                     startActivity(new Intent(this, MainActivity.class)
                             .putExtra("id", confirmation.toJSONObject().getJSONObject("response").getString("id"))
                             .putExtra("items", adapter.getItemList())
-                            .putExtra("amount", String.valueOf(AMOUNT))
+                            .putExtra("amount", adapter.getAmount())
                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -167,9 +174,40 @@ public class ShoppingListActivity extends AppCompatActivity {
                 .create().show();
     }
 
+    private void setAdapter() {
+        final String URL = "http://onthego.myddns.me:8000/get_productos";
+        final ArrayList<ItemConsumableAction> arrayList = new ArrayList<>();
+
+        //api rest request
+        final RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getApplicationContext()));
+        final JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for(int i = 0; i < response.length(); ++i)
+                                arrayList.add(new ItemConsumableAction(response.getJSONObject(i)));
+                            //set recycler & adapter
+                            adapter = new AdapterItemConsumableAction(getApplicationContext(), arrayList);
+                            recyclerView.setAdapter(adapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), R.string.error_account, Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(arrayRequest);
+    }
+
     private void checkout() {
         final Intent intent = new Intent(this, PaymentActivity.class);
-        final PayPalPayment payment = new PayPalPayment(new BigDecimal(AMOUNT), "EUR",
+        final PayPalPayment payment = new PayPalPayment(new BigDecimal(adapter.getAmount()), "EUR",
                 getString(R.string.display_paypal_message), PayPalPayment.PAYMENT_INTENT_SALE);
 
         //start paypal checkout activity

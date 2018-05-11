@@ -21,9 +21,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -58,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         final Intent intent = getIntent();
         if (intent.getStringExtra("id") != null)
             purchaseDialog(intent.getStringExtra("id"), intent.getStringExtra("items"),
-                    intent.getStringExtra("amount"));
+                    intent.getFloatExtra("amount", 0));
     }
 
     @Override
@@ -71,11 +68,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_profile:
-                final Intent intent = new Intent(this, ProfileActivity.class);
-                intent.putExtra("userName", userName);
-                intent.putExtra("userEmail", userEmail);
-                intent.putExtra("userPhoto", userPhoto);
-                startActivity(intent);
+                startActivity(new Intent(this, ProfileActivity.class)
+                        .putExtra("userId", userId)
+                        .putExtra("userName", userName)
+                        .putExtra("userEmail", userEmail)
+                        .putExtra("userPhoto", userPhoto)
+                );
                 break;
 
             case R.id.action_logout:
@@ -107,9 +105,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) { }
 
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
@@ -118,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             userEmail = result.getSignInAccount().getEmail();
             userPhoto = Objects.requireNonNull(result.getSignInAccount().getPhotoUrl()).toString();
             initViewPager();
-
         } else
             gotoLogin();
     }
@@ -142,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .create().show();
     }
 
-    private void purchaseDialog(String id, String items, String amount) {
+    private void purchaseDialog(String id, String items, float amount) {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_purchase_title)
                 .setMessage(String.format(getString(R.string.dialog_purchase_body), id, items, amount))

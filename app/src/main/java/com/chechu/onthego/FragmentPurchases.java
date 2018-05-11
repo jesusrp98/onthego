@@ -39,7 +39,7 @@ public class FragmentPurchases extends Fragment {
                 final ItemPurchase item = (ItemPurchase) parent.getItemAtPosition(position);
                 new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
                         .setTitle(R.string.dialog_purchase_title)
-                        .setMessage(String.format(getString(R.string.dialog_purchase_body), item.getId(), item.getItemsString(), item.getAmount()))
+                        .setMessage(String.format(getString(R.string.dialog_purchase_body), item.getId(), item.getItemList(), item.getAmount()))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();

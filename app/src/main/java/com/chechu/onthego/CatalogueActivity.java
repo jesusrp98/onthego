@@ -14,17 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -45,10 +42,9 @@ public class CatalogueActivity extends AppCompatActivity {
 
         //ui init
         recyclerView = findViewById(R.id.catalogueRecyclerView);
+        fab =  findViewById(R.id.fab);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setHasFixedSize(true);
-
-        fab =  findViewById(R.id.fab);
 
         setAdapter();
     }

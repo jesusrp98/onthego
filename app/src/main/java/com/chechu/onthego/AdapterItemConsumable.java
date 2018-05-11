@@ -12,8 +12,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 
 public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsumable.ViewHolder> implements Filterable{
@@ -51,21 +49,6 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
         return itemList.size();
     }
 
-    //save xml ui into to cache
-    class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView consumiblePhoto;
-        private final TextView consumibleTitle;
-        private final TextView consumableQuantity;
-
-        private ViewHolder(View view) {
-            super(view);
-
-            consumiblePhoto = view.findViewById(R.id.consumableIcon);
-            consumibleTitle = view.findViewById(R.id.consumableTitle);
-            consumableQuantity = view.findViewById(R.id.consumablePrice);
-        }
-    }
-
     @NonNull
     @Override
     //TODO la busqueda NO es funcional
@@ -101,6 +84,21 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
                 return results;
             }
         };
+    }
+
+    //save xml ui into to cache
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView consumiblePhoto;
+        private final TextView consumibleTitle;
+        private final TextView consumableQuantity;
+
+        private ViewHolder(View view) {
+            super(view);
+
+            consumiblePhoto = view.findViewById(R.id.consumableIcon);
+            consumibleTitle = view.findViewById(R.id.consumableTitle);
+            consumableQuantity = view.findViewById(R.id.consumablePrice);
+        }
     }
 }
 

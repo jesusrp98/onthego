@@ -6,9 +6,13 @@ android {
         applicationId "com.chechu.onthego"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 9
-        versionName "0.4.9"
+        versionCode 10
+        versionName "0.5.10"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    aaptOptions {
+        cruncherEnabled = false
     }
 
     signingConfigs {
