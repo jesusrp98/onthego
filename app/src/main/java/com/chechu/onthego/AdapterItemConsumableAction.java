@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,12 +30,15 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
     private TypedArray photoArray;
     private Context context;
     private AlertDialog editTextDialog;
+    private TextView totalTextView;
 
-    AdapterItemConsumableAction(Context context, ArrayList<ItemConsumableAction> arrayList) {
+    AdapterItemConsumableAction(Context context, ArrayList<ItemConsumableAction> arrayList, TextView totalTextView) {
         this.photoArray = context.getResources().obtainTypedArray(R.array.icon_view);
         this.itemList = new ArrayList<>();
         this.constItemList = arrayList;
         this.context = context;
+        this.totalTextView = totalTextView;
+        updateTotal();
     }
 
     @NonNull
@@ -73,7 +78,7 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
         final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_text, null);
 
         final EditText dialogEditText = dialogView.findViewById(R.id.text_input);
-        dialogEditText.setHint(context.getString(R.string.display_hint));
+        dialogEditText.setHint(context.getString(R.string.display_hint_number));
         dialogEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -109,8 +114,11 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
 
     private void enterEditTextDialog(String string, final int i) {
         int quantity = Integer.parseInt(string);
-        if (itemList.get(i).getStock() > quantity) {
+        if (quantity == 0)
+            Toast.makeText(context, R.string.error_stock_0, Toast.LENGTH_LONG).show();
+        else if (itemList.get(i).getStock() > quantity) {
             itemList.get(i).setQuantity(quantity);
+            updateTotal();
             notifyDataSetChanged();
         } else
             Toast.makeText(context, R.string.error_stock, Toast.LENGTH_LONG).show();
@@ -127,9 +135,24 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
         notifyDataSetChanged();
     }
 
+    public void addItem(int i, int quantity) {
+        itemList.add(constItemList.get(i));
+        itemList.get(itemList.size() - 1).setQuantity(quantity);
+        updateTotal();
+        notifyDataSetChanged();
+    }
+
     public void addRandomItem() {
         itemList.add(constItemList.get(new Random().nextInt(49)));
+        updateTotal();
         notifyDataSetChanged();
+    }
+
+    private void updateTotal() {
+        if (getTotalPrice() != 0)
+            totalTextView.setText(String.format(context.getString(R.string.display_shopping_total), getTotalPrice()));
+        else
+            totalTextView.setText(context.getString(R.string.error_no_product));
     }
 
     public String getItemList() {
@@ -139,11 +162,32 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
         return aux;
     }
 
-    public float getAmount() {
+    public ArrayList<String> getNameArray() {
+        final ArrayList<String> arrayList = new ArrayList<>();
+        for(ItemConsumableAction item : constItemList)
+            arrayList.add(item.getConsumibleName());
+        return arrayList;
+    }
+
+    public ArrayList<Double> getPriceArray() {
+        final ArrayList<Double> arrayList = new ArrayList<>();
+        for(ItemConsumableAction item : constItemList)
+            arrayList.add(item.getConsumiblePrice());
+        return arrayList;
+    }
+
+    public float getTotalPrice() {
         float aux = 0;
         for (ItemConsumableAction item : itemList)
             aux += item.getQuantity() * item.getConsumiblePrice();
         return aux;
+    }
+
+    public ArrayList<Integer> getStockArray() {
+        final ArrayList<Integer> arrayList = new ArrayList<>();
+        for(ItemConsumableAction item : constItemList)
+            arrayList.add(item.getStock());
+        return arrayList;
     }
 
     //save xml ui into to cache

@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ShoppingListActivity"
     tools:showIn="@layout/activity_shopping_list">
 
-    <android.support.v7.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
+        android:id="@+id/totalText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="8dp"
+        android:paddingTop="16dp"
+        android:textSize="18sp"
+        android:textColor="?android:textColorSecondary" />
 
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/shoppingRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="8dp"
         android:clipToPadding="false"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        android:layout_below="@+id/totalText"/>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

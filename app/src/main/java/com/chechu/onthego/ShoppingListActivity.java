@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,6 +35,8 @@ import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.w3c.dom.Text;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -87,7 +96,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                     startActivity(new Intent(this, MainActivity.class)
                             .putExtra("id", confirmation.toJSONObject().getJSONObject("response").getString("id"))
                             .putExtra("items", adapter.getItemList())
-                            .putExtra("amount", adapter.getAmount())
+                            .putExtra("amount", adapter.getTotalPrice())
                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -154,13 +163,38 @@ public class ShoppingListActivity extends AppCompatActivity {
     @SuppressLint("InflateParams")
     private void dialogAddProduct() {
         final View dialogView = this.getLayoutInflater().inflate(R.layout.dialog_add_product, null);
-        //TODO hacer addDialog
+        final Spinner dialogSpinner = dialogView.findViewById(R.id.addProductSpinner);
+        final TextView dialogPrice = dialogView.findViewById(R.id.addProductPrice);
+        final ImageView dialogPhoto = dialogView.findViewById(R.id.addProductPhoto);
+        final EditText dialogEditText = dialogView.findViewById(R.id.addProductQuantity);
+
+        dialogSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, adapter.getNameArray()));
+        dialogSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                dialogPrice.setText(String.format(getString(R.string.display_consumible_price), adapter.getPriceArray().get(position)));
+                dialogPhoto.setImageResource(getApplicationContext().getResources()
+                        .obtainTypedArray(R.array.icon_view).getResourceId(position, -1));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_add_product_title)
                 .setView(dialogView)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        int i = dialogSpinner.getSelectedItemPosition();
+                        String text = dialogEditText.getText().toString();
+                        if (!text.equals("")) {
+                            if (adapter.getStockArray().get(i) > Integer.parseInt(text))
+                                adapter.addItem(i, Integer.parseInt(dialogEditText.getText().toString()));
+                            else
+                                Toast.makeText(getApplicationContext(), R.string.error_stock, Toast.LENGTH_LONG).show();
+                        } else
+                            Toast.makeText(getApplicationContext(), R.string.error_stock_0, Toast.LENGTH_LONG).show();
                         dialog.dismiss();
                     }
                 })
@@ -170,7 +204,6 @@ public class ShoppingListActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 })
-                .setCancelable(false)
                 .create().show();
     }
 
@@ -188,7 +221,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                             for(int i = 0; i < response.length(); ++i)
                                 arrayList.add(new ItemConsumableAction(response.getJSONObject(i)));
                             //set recycler & adapter
-                            adapter = new AdapterItemConsumableAction(getApplicationContext(), arrayList);
+                            adapter = new AdapterItemConsumableAction(getApplicationContext(), arrayList, (TextView) findViewById(R.id.totalText));
                             recyclerView.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -207,7 +240,7 @@ public class ShoppingListActivity extends AppCompatActivity {
 
     private void checkout() {
         final Intent intent = new Intent(this, PaymentActivity.class);
-        final PayPalPayment payment = new PayPalPayment(new BigDecimal(adapter.getAmount()), "EUR",
+        final PayPalPayment payment = new PayPalPayment(new BigDecimal(adapter.getTotalPrice()), "EUR",
                 getString(R.string.display_paypal_message), PayPalPayment.PAYMENT_INTENT_SALE);
 
         //start paypal checkout activity

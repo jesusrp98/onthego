@@ -15,7 +15,7 @@
     <string name="action_add_product">Añadir producto</string>
     <string name="action_add_product_random">Producto aleatorio</string>
     <string name="action_delete">BORRAR</string>
-    <string name="action_telegram">VINCULAR TELEGRAM</string>
+    <string name="action_telegram">VINCULAR CUENTA DE TELEGRAM</string>
     <string name="action_edit">EDITAR</string>
 
     <string name="dialog_logout_title">Cerrar sesión</string>
@@ -26,6 +26,9 @@
 
     <string name="dialog_add_product_title">Añadir producto</string>
     <string name="dialog_edit_product_title">Editar producto</string>
+
+    <string name="dialog_tutorial_title">¡Bienvenido a OnTheGo!</string>
+        <string name="dialog_tutorial_body">OnTheGo ofrece una nueva experiencia a la hora de comprar productos. Con esta aplicación puede controlar sus compras anteriores, así como su carrito de la compra.</string>
 
     <string name="dialog_purchase_title">Info. de la compra</string>
     <string name="dialog_purchase_body">¡Muchas gracias por confiar en OnTheGo!\nAquí tiene la información de la compra.\n\n-ID de pago: %1$s\n\n-Lista de productos:\n%2$s\n-Precio total: %3$.2f€\n\n¡Vuelva cuando quiera!</string>
@@ -44,9 +47,16 @@
     <string name="display_paypal_message">Carrito de la compra</string>
     <string name="display_consumible_price">Precio: %1$.2f€</string>
     <string name="display_consumible_amount">Cantidad: %1$s</string>
-    <string name="display_hint">Introduzca número…</string>
+    <string name="display_sex">Sexo: Hombre</string>
+    <string name="display_shopping_total">Precio total: %1$.2f€</string>
+    <string name="display_hint_number">Introduzca número…</string>
+    <string name="display_hint_quantity">Introduzca cantidad…</string>
     <string name="display_account_info">Esta aplicación NO guarda ningún tipo de información que pueda comprometer la información privada del usuario</string>
 
     <string name="error_account">No se ha podido establecer la conexión</string>
     <string name="error_stock">El número introducido supera al stock del producto</string>
+    <string name="error_stock_0">El número introducido es nulo</string>
+    <string name="error_no_product">El carrito de la compra está vacio</string>
+
+    <string name="key_tutorial">key_tutorial</string>
 </resources>

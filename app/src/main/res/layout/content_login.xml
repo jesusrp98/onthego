@@ -36,23 +36,35 @@
 
     </LinearLayout>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            app:srcCompat="@drawable/ic_shopping_cart"
-            android:tint="@android:color/darker_gray"
-            android:layout_above="@+id/signInButton"
-            android:layout_below="@+id/welcomeText"
-            android:padding="96dp"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        app:srcCompat="@drawable/ic_shopping_cart"
+        android:tint="@android:color/darker_gray"
+        android:layout_above="@+id/signInButton"
+        android:layout_below="@+id/welcomeText"
+        android:padding="96dp"/>
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/signInButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="48dp"
-            android:layout_marginBottom="32dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_alignParentBottom="true" />
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/signInButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="48dp"
+        android:layout_marginBottom="64dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:textSize="16sp"
+        android:textColor="?android:textColorSecondary"
+        android:textStyle="italic"
+        android:text="@string/display_account_info"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="32dp"/>
 
 </RelativeLayout>
