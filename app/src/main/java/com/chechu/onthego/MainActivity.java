@@ -137,8 +137,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                })
-                .create().show();
+                }).create().show();
     }
 
     private void purchaseDialog(String id, String items, float amount) {
@@ -149,9 +148,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
-                })
-                .setCancelable(false)
-                .create().show();
+                }).setCancelable(false).create().show();
     }
 
     private void showTutorial() {
@@ -165,9 +162,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                             sharedPreferences.edit().putBoolean(getString(R.string.key_tutorial), true).apply();
                             dialog.dismiss();
                         }
-                    })
-                    .setCancelable(false)
-                    .create().show();
+                    }).setCancelable(false).create().show();
         }
     }
 
@@ -195,9 +190,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         final Bundle bundles[] = {new Bundle(), new Bundle()};
 
         bundles[0].putString("userName", userName);
+        bundles[0].putString("userId", userId);
         fragments[1].setArguments(bundles[0]);
 
-        bundles[1].putString("id", userId);
+        bundles[1].putString("userId", userId);
         fragments[2].setArguments(bundles[1]);
 
         //add fragments to fragment adapter

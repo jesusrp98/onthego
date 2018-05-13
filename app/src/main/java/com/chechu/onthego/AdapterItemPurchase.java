@@ -1,5 +1,6 @@
 package com.chechu.onthego;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -10,13 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class AdapterItemPurchase extends ArrayAdapter<ItemPurchase> {
     AdapterItemPurchase(Context context, ArrayList<ItemPurchase> arrayList) {
         super(context, R.layout.item_purchase, arrayList);
     }
 
+    @SuppressLint("DefaultLocale")
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -39,7 +40,7 @@ public class AdapterItemPurchase extends ArrayAdapter<ItemPurchase> {
         //assign objects to viewholder
         viewHolder.iconView.setImageDrawable(
                 TextDrawable.builder().beginConfig().textColor(getContext().getResources().getColor(android.R.color.white))
-                        .endConfig().buildRound("#" + Objects.requireNonNull(itemPurchase).getCardinal(),
+                        .endConfig().buildRound(String.format("#%d", position + 1),
                         getContext().getResources().getColor(R.color.colorAccent))
         );
         viewHolder.titleView.setText(itemPurchase.getId());

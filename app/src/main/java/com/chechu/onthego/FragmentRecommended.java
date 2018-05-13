@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -40,9 +39,6 @@ public class FragmentRecommended extends Fragment {
     private void setAdapter() {
         final String URL = "http://onthego.myddns.me:8000/get_productos_top";
         final ArrayList<ItemConsumable> arrayList = new ArrayList<>();
-
-        //api rest request
-        final RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getContext()));
         final JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -64,6 +60,6 @@ public class FragmentRecommended extends Fragment {
                     }
                 }
         );
-        requestQueue.add(arrayRequest);
+        Volley.newRequestQueue(Objects.requireNonNull(getContext())).add(arrayRequest);
     }
 }

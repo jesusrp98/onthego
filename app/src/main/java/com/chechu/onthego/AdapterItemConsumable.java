@@ -8,22 +8,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 
-public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsumable.ViewHolder> implements Filterable{
+public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsumable.ViewHolder> {
     private ArrayList<ItemConsumable> itemList;
-    private ArrayList<ItemConsumable> constItemList;
     private TypedArray photoArray;
     private Context context;
 
     AdapterItemConsumable(Context context, ArrayList<ItemConsumable> itemConsumables) {
         this.photoArray = context.getResources().obtainTypedArray(R.array.icon_view);
         this.itemList = itemConsumables;
-        this.constItemList = itemConsumables;
         this.context = context;
     }
 
@@ -39,51 +35,14 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
         final ItemConsumable item = itemList.get(position);
 
         //set info to ui
-        holder.consumiblePhoto.setImageResource(photoArray.getResourceId(item.getConsumibleId() - 1, -1));
-        holder.consumibleTitle.setText(item.getConsumibleName());
-        holder.consumableQuantity.setText(String.format(context.getString(R.string.display_consumible_price), item.getConsumiblePrice()));
+        holder.consumiblePhoto.setImageResource(photoArray.getResourceId(item.getId() - 1, -1));
+        holder.consumibleTitle.setText(item.getName());
+        holder.consumableQuantity.setText(String.format(context.getString(R.string.display_consumible_price), item.getPrice()));
     }
 
     @Override
     public int getItemCount() {
         return itemList.size();
-    }
-
-    @NonNull
-    @Override
-    //TODO la busqueda NO es funcional
-    public Filter getFilter() {
-        //filters the array adapter when search is activated
-        return new Filter() {
-            @Override
-            @SuppressWarnings("unchecked")
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                itemList.clear();
-                itemList.addAll((ArrayList<ItemConsumable>) results.values);
-                notifyDataSetChanged();
-            }
-
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                final ArrayList<ItemConsumable> filteredArrayList = new ArrayList<>();
-                final String string = constraint.toString().toLowerCase();
-                final FilterResults results = new FilterResults();
-
-                //checks if search textbox is empty
-                if (string.isEmpty()) {
-                    results.count = constItemList.size();
-                    results.values = constItemList;
-                } else {
-                    for (ItemConsumable item : constItemList) {
-                        if (item.getConsumibleName().toLowerCase().contains(string))
-                            filteredArrayList.add(item);
-                    }
-                    results.count = filteredArrayList.size();
-                    results.values = filteredArrayList;
-                }
-                return results;
-            }
-        };
     }
 
     //save xml ui into to cache

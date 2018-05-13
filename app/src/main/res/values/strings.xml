@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">OnTheGo</string>
+    <string name="app_version">Versión %1$s</string>
 
     <string name="activity_login">Registro de cuenta</string>
     <string name="activity_profile">Mi perfil</string>

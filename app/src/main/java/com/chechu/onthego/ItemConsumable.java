@@ -4,25 +4,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 class ItemConsumable {
-    private int consumibleId;
-    private String consumibleName;
-    private double consumiblePrice;
+    private int id;
+    private String name;
+    private double price;
 
     public ItemConsumable(JSONObject object) throws JSONException {
-        this.consumibleId = object.getInt("id");
-        this.consumibleName = object.getString("nombre");
-        this.consumiblePrice = object.getDouble("precio");
+        this.id = object.getInt("id");
+        this.name = object.getString("nombre");
+        this.price = object.getDouble("precio");
     }
 
-    public int getConsumibleId() {
-        return consumibleId;
+    public int getId() {
+        return id;
     }
 
-    public String getConsumibleName() {
-        return consumibleName;
+    public String getName() {
+        return name;
     }
 
-    public double getConsumiblePrice() {
-        return consumiblePrice;
+    public double getPrice() {
+        return price;
     }
 }

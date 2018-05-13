@@ -6,26 +6,24 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 class ItemPurchase {
-    private int cardinal;
     private String id;
     private String date;
     private ArrayList<ItemConsumableAction> items;
-    private double amount;
+    private double totalPrice;
 
-    public ItemPurchase(int cardinal, JSONObject object) throws JSONException {
-        this.cardinal = cardinal;
+    public ItemPurchase() {
+        items = new ArrayList<>();
+    }
+
+    public ItemPurchase(JSONObject object) throws JSONException {
         this.id = object.getString("id_pago");
         this.date = object.getString("fecha");
-        this.amount = object.getDouble("precio_total");
+        this.totalPrice = object.getDouble("precio_total");
         this.items = new ArrayList<>();
 
         final JSONArray array = object.getJSONArray("productos");
         for (int i = 0; i < array.length(); ++i)
             items.add(new ItemConsumableAction(array.getJSONObject(i)));
-    }
-
-    public int getCardinal() {
-        return cardinal;
     }
 
     public String getId() {
@@ -36,14 +34,35 @@ class ItemPurchase {
         return date;
     }
 
+    public ArrayList<ItemConsumableAction> getItems() {
+        return items;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void addItem(ItemConsumableAction item, int quantity) {
+        items.add(item);
+        items.get(items.size() - 1).setQuantity(quantity);
+        totalPrice += item.getPrice() * quantity;
+    }
+
+    public void removeItem(int i) {
+        totalPrice -= items.get(i).getPrice() * items.get(i).getQuantity();
+        items.remove(i);
+    }
+
+    public void editItem(int i, long quantity) {
+        totalPrice -= items.get(i).getPrice() * items.get(i).getQuantity();
+        items.get(i).setQuantity(quantity);
+        totalPrice += items.get(i).getPrice() * items.get(i).getQuantity();
+    }
+
     public String getItemList() {
         String aux = "";
         for (ItemConsumableAction item : items)
-            aux += " " + item.getConsumibleName() + ": " + item.getQuantity() + " unidades.\n";
+            aux += " " + item.getName() + ": " + item.getQuantity() + " unidades.\n";
         return aux;
-    }
-
-    public double getAmount() {
-        return amount;
     }
 }

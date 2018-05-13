@@ -18,16 +18,18 @@ public class FragmentQR extends Fragment {
         final ImageView qr = view.findViewById(R.id.qr);
         final TextView welcomeTextView = view.findViewById(R.id.qr_welcome);
 
+        final Bundle bundle = this.getArguments();
+
         //display user name on fragment
         if (this.getArguments() != null) {
             welcomeTextView.setText(String.format(getString(R.string.display_welcome_screen),
-                    this.getArguments().getString("userName")));
+                    bundle.getString("userName")));
         }
 
         qr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ShoppingListActivity.class)
+                startActivity(new Intent(getActivity(), ShoppingListActivity.class).putExtra("id_cliente", bundle.getString("userId"))
                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         });

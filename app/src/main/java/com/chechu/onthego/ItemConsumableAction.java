@@ -4,8 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ItemConsumableAction extends ItemConsumable {
-    private int quantity;
-    private int stock;
+    private long quantity;
+    private long stock;
 
     public ItemConsumableAction(JSONObject object) throws JSONException {
         super(object);
@@ -17,11 +17,11 @@ public class ItemConsumableAction extends ItemConsumable {
         return quantity;
     }
 
-    public int getStock() {
+    public long getStock() {
         return stock;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
 }

@@ -11,9 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -21,13 +23,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -36,10 +36,11 @@ import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
 import java.util.Objects;
 
 public class ShoppingListActivity extends AppCompatActivity {
@@ -93,13 +94,8 @@ public class ShoppingListActivity extends AppCompatActivity {
 
             if (confirmation != null) {
                 try {
-                    //pass payment info to display in MainActivity
-                    postPurchase();
-                    startActivity(new Intent(this, MainActivity.class)
-                            .putExtra("id", confirmation.toJSONObject().getJSONObject("response").getString("id"))
-                            .putExtra("items", adapter.getItemList())
-                            .putExtra("amount", adapter.getTotalPrice())
-                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                    postPurchase(confirmation.toJSONObject().getJSONObject("response").getString("id"),
+                            getIntent().getStringExtra("id_cliente"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -148,14 +144,12 @@ public class ShoppingListActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), MainActivity.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                })
-                .create().show();
+                }).create().show();
     }
 
     @SuppressLint("InflateParams")
@@ -171,15 +165,14 @@ public class ShoppingListActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 dialogPrice.setText(String.format(getString(R.string.display_consumible_price), adapter.getPriceArray().get(position)));
-                dialogPhoto.setImageResource(getApplicationContext().getResources()
-                        .obtainTypedArray(R.array.icon_view).getResourceId(position, -1));
+                dialogPhoto.setImageResource(adapter.getPhoto(position));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
         });
 
-        new AlertDialog.Builder(this)
+        final AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_add_product_title)
                 .setView(dialogView)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -201,16 +194,14 @@ public class ShoppingListActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                })
-                .create().show();
+                }).setCancelable(false).create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
     }
 
     private void setAdapter() {
         final String URL = "http://onthego.myddns.me:8000/get_productos";
         final ArrayList<ItemConsumableAction> arrayList = new ArrayList<>();
-
-        //api rest request
-        final RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getApplicationContext()));
         final JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -233,20 +224,21 @@ public class ShoppingListActivity extends AppCompatActivity {
                     }
                 }
         );
-        requestQueue.add(arrayRequest);
+        Volley.newRequestQueue(Objects.requireNonNull(getApplicationContext())).add(arrayRequest);
     }
 
-    //TODO hacer esto
-    private void postPurchase() {
+    private void postPurchase(final String id, String id_cliente) {
         final String URL = "http://onthego.myddns.me:8000/enviar_compra";
-        final ArrayList<ItemConsumableAction> arrayList = new ArrayList<>();
-
-        //api rest request
-        final RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getApplicationContext()));
-        final StringRequest arrayRequest = new StringRequest(Request.Method.POST, URL,
-                new Response.Listener<String>() {
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, getPostInfo(id, id_cliente),
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) { }
+                    public void onResponse(JSONObject response) {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class)
+                                .putExtra("id", id)
+                                .putExtra("items", adapter.getItemList())
+                                .putExtra("amount", adapter.getTotalPrice())
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                    }
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -254,16 +246,39 @@ public class ShoppingListActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), R.string.error_account, Toast.LENGTH_LONG).show();
                     }
                 }
-        ){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
+        );
+        Volley.newRequestQueue(Objects.requireNonNull(getApplicationContext())).add(jsonObjectRequest);
+    }
 
+    @SuppressLint("SimpleDateFormat")
+    private JSONObject getPostInfo(String id, String id_cliente) {
+        final JSONObject object = new JSONObject();
+        final JSONArray array = new JSONArray();
 
-                return params;
+        final ArrayList<ItemConsumableAction> arrayList = adapter.getItems();
+        final double price = adapter.getTotalPrice();
+
+        try {
+            object.put("id_cliente", id_cliente);
+            object.put("id", id);
+            object.put("fecha", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+            object.put("precio_total", price);
+
+            for (int i = 0; i < arrayList.size(); ++i) {
+                JSONObject aux = new JSONObject();
+                aux.put("id", arrayList.get(i).getId());
+                aux.put("precio", arrayList.get(i).getPrice());
+                aux.put("nombre", arrayList.get(i).getName());
+                aux.put("cantidad", arrayList.get(i).getQuantity());
+                array.put(aux);
             }
-        };
-        requestQueue.add(arrayRequest);
+            object.put("productos", array);
+            Log.d("purchaseInfo", object.toString());
+        } catch (JSONException e) {
+           e.printStackTrace();
+        }
+
+        return object;
     }
 
     private void checkout() {

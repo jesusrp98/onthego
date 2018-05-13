@@ -19,22 +19,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterItemConsumableAction.ViewHolder> {
-    private ArrayList<ItemConsumableAction> constItemList;
-    private ArrayList<ItemConsumableAction> itemList;
-    private TypedArray photoArray;
-    private Context context;
+    private ArrayList<ItemConsumableAction> catalogue;
+    private ItemPurchase itemPurchase;
+
     private AlertDialog editTextDialog;
     private TextView totalTextView;
 
+    private TypedArray photoArray;
+    private Context context;
+
     AdapterItemConsumableAction(Context context, ArrayList<ItemConsumableAction> arrayList, TextView totalTextView) {
         this.photoArray = context.getResources().obtainTypedArray(R.array.icon_view);
-        this.itemList = new ArrayList<>();
-        this.constItemList = arrayList;
-        this.context = context;
+        this.itemPurchase = new ItemPurchase();
         this.totalTextView = totalTextView;
+        this.catalogue = arrayList;
+        this.context = context;
+
         updateTotal();
     }
 
@@ -48,13 +50,13 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
     @SuppressLint("StringFormatMatches")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        final ItemConsumableAction item = itemList.get(position);
+        final ItemConsumableAction item = getItems().get(position);
 
         //set info to ui
-        holder.consumableIcon.setImageResource(photoArray.getResourceId(item.getConsumibleId() - 1, -1));
-        holder.consumableTitle.setText(item.getConsumibleName());
+        holder.consumableIcon.setImageResource(photoArray.getResourceId(item.getId() - 1, -1));
+        holder.consumableTitle.setText(item.getName());
         holder.consumableAmount.setText(String.format(context.getString(R.string.display_consumible_amount), item.getQuantity()));
-        holder.consumablePrice.setText(String.format(context.getString(R.string.display_consumible_price), item.getConsumiblePrice()));
+        holder.consumablePrice.setText(String.format(context.getString(R.string.display_consumible_price), item.getPrice()));
 
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,69 +75,42 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
     @SuppressLint("InflateParams")
     private void dialogEdit(final int i) {
         final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_text, null);
-
         final EditText dialogEditText = dialogView.findViewById(R.id.text_input);
-        dialogEditText.setHint(context.getString(R.string.display_hint_number));
-        dialogEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                //if pressed enter
-                if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
-                    enterEditTextDialog(dialogEditText.getText().toString(), i);
-                    return true;
-                }
-                return false;
-            }
-        });
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.dialog_edit_product_title)
+        editTextDialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.dialog_edit_product_title)
                 .setView(dialogView)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        enterEditTextDialog(dialogEditText.getText().toString(), i);
+                        int quantity = Integer.parseInt(dialogEditText.getText().toString());
+                        if (quantity == 0)
+                            Toast.makeText(context, R.string.error_stock_0, Toast.LENGTH_LONG).show();
+                        else if (getItems().get(i).getStock() > quantity) {
+                            itemPurchase.editItem(i, quantity);
+                            updateTotal();
+                            notifyDataSetChanged();
+                        } else
+                            Toast.makeText(context, R.string.error_stock, Toast.LENGTH_LONG).show();
+                        editTextDialog.dismiss();
                     }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
-                });
-
-        editTextDialog = builder.create();
+                }).create();
         editTextDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         editTextDialog.show();
     }
 
-    private void enterEditTextDialog(String string, final int i) {
-        int quantity = Integer.parseInt(string);
-        if (quantity == 0)
-            Toast.makeText(context, R.string.error_stock_0, Toast.LENGTH_LONG).show();
-        else if (itemList.get(i).getStock() > quantity) {
-            itemList.get(i).setQuantity(quantity);
-            updateTotal();
-            notifyDataSetChanged();
-        } else
-            Toast.makeText(context, R.string.error_stock, Toast.LENGTH_LONG).show();
-        editTextDialog.dismiss();
-    }
-
     @Override
     public int getItemCount() {
-        return itemList.size();
+        return getItems().size();
     }
 
-    private void dialogDelete(final int i) {
-        itemList.remove(i);
-        updateTotal();
-        notifyDataSetChanged();
-    }
-
-    public void addItem(int i, int quantity) {
-        itemList.add(constItemList.get(i));
-        itemList.get(itemList.size() - 1).setQuantity(quantity);
+    private void dialogDelete(int i) {
+        itemPurchase.removeItem(i);
         updateTotal();
         notifyDataSetChanged();
     }
@@ -147,39 +122,47 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
             totalTextView.setText(context.getString(R.string.error_no_product));
     }
 
+    public void addItem(int i, int quantity) {
+        itemPurchase.addItem(catalogue.get(i), quantity);
+        updateTotal();
+        notifyDataSetChanged();
+    }
+
     public String getItemList() {
-        String aux = "";
-        for (ItemConsumableAction item : itemList)
-            aux += " " + item.getConsumibleName() + ": " + item.getQuantity() + " unidades.\n";
-        return aux;
+        return itemPurchase.getItemList();
     }
 
     public ArrayList<String> getNameArray() {
         final ArrayList<String> arrayList = new ArrayList<>();
-        for(ItemConsumableAction item : constItemList)
-            arrayList.add(item.getConsumibleName());
+        for(ItemConsumableAction item : catalogue)
+            arrayList.add(item.getName());
         return arrayList;
     }
 
     public ArrayList<Double> getPriceArray() {
         final ArrayList<Double> arrayList = new ArrayList<>();
-        for(ItemConsumableAction item : constItemList)
-            arrayList.add(item.getConsumiblePrice());
+        for(ItemConsumableAction item : catalogue)
+            arrayList.add(item.getPrice());
         return arrayList;
     }
 
-    public float getTotalPrice() {
-        float aux = 0;
-        for (ItemConsumableAction item : itemList)
-            aux += item.getQuantity() * item.getConsumiblePrice();
-        return aux;
-    }
-
-    public ArrayList<Integer> getStockArray() {
-        final ArrayList<Integer> arrayList = new ArrayList<>();
-        for(ItemConsumableAction item : constItemList)
+    public ArrayList<Long> getStockArray() {
+        final ArrayList<Long> arrayList = new ArrayList<>();
+        for(ItemConsumableAction item : catalogue)
             arrayList.add(item.getStock());
         return arrayList;
+    }
+
+    public double getTotalPrice() {
+        return itemPurchase.getTotalPrice();
+    }
+
+    public ArrayList<ItemConsumableAction> getItems() {
+        return itemPurchase.getItems();
+    }
+
+    public int getPhoto(int i) {
+        return photoArray.getResourceId(catalogue.get(i).getId() - 1, -1);
     }
 
     //save xml ui into to cache

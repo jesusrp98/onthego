@@ -14,6 +14,7 @@
         android:inputType="number"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
+        android:layout_marginEnd="16dp"
+        android:hint="@string/display_hint_number"/>
 
 </LinearLayout>
