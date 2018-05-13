@@ -8,12 +8,11 @@
     <string name="activity_catalogue">Catálogo</string>
 
     <string name="action_account">Mi perfil</string>
-    <string name="action_logout">Cerrar sesión</string>
+    <string name="action_logout">Cerrar sesión…</string>
     <string name="action_about">Información</string>
-    <string name="action_quit_shopping">Parar de comprar</string>
+    <string name="action_quit_shopping">Parar de comprar…</string>
     <string name="action_catalog">Ver catálogo completo</string>
-    <string name="action_add_product">Añadir producto</string>
-    <string name="action_add_product_random">Producto aleatorio</string>
+    <string name="action_add_product">Añadir producto…</string>
     <string name="action_delete">BORRAR</string>
     <string name="action_telegram">VINCULAR CUENTA DE TELEGRAM</string>
     <string name="action_edit">EDITAR</string>
@@ -22,7 +21,7 @@
     <string name="dialog_logout_body">¿Está usted seguro de que desea cerrar sesión? Podrá volver a iniciar sesión más tarde.</string>
 
     <string name="dialog_shopping_title">Parar de comprar</string>
-    <string name="dialog_shopping_body">¿Está usted completamente seguro de que desea parar de comprar?</string>
+    <string name="dialog_shopping_body">¿Está usted completamente seguro de que desea parar de comprar? Esta compra no constará en los registros.</string>
 
     <string name="dialog_add_product_title">Añadir producto</string>
     <string name="dialog_edit_product_title">Editar producto</string>
@@ -35,14 +34,14 @@
     <string name="dialog_purchase_date">Fecha: %s</string>
 
     <string-array name="display_maintab">
-        <item>RECOMENDADOS</item>
+        <item>MÁS VENDIDOS</item>
         <item>CODIGO QR</item>
-        <item>ULTIMAS COMPRAS</item>
+        <item>COMPRAS</item>
     </string-array>
 
     <string name="display_welcome_title">¡Bienvenido a OnTheGo!</string>
-    <string name="display_welcome_body">Para empezar a comprar de forma inteligente, inicie sesión con su cuenta de Google</string>
-    <string name="display_scan_qr">Para comenzar a comprar, escanee el código QR en los terminales a la entrada del establecimiento</string>
+    <string name="display_welcome_body">Para empezar a comprar de forma inteligente, inicie sesión con su cuenta de Google.</string>
+    <string name="display_scan_qr">Para comenzar a comprar, escanee el código QR en los terminales a la entrada del establecimiento.</string>
     <string name="display_welcome_screen">¿Está listo para empezar a comprar, %1$s?</string>
     <string name="display_paypal_message">Carrito de la compra</string>
     <string name="display_consumible_price">Precio: %1$.2f€</string>
@@ -51,7 +50,7 @@
     <string name="display_shopping_total">Precio total: %1$.2f€</string>
     <string name="display_hint_number">Introduzca número…</string>
     <string name="display_hint_quantity">Introduzca cantidad…</string>
-    <string name="display_account_info">Esta aplicación NO guarda ningún tipo de información que pueda comprometer la información privada del usuario</string>
+    <string name="display_account_info">Esta aplicación NO guarda ningún tipo de información que pueda comprometer la información privada del usuario.</string>
 
     <string name="error_account">No se ha podido establecer la conexión</string>
     <string name="error_stock">El número introducido supera al stock del producto</string>

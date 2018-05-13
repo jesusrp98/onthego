@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -22,11 +21,13 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -35,10 +36,10 @@ import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.w3c.dom.Text;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class ShoppingListActivity extends AppCompatActivity {
@@ -93,6 +94,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             if (confirmation != null) {
                 try {
                     //pass payment info to display in MainActivity
+                    postPurchase();
                     startActivity(new Intent(this, MainActivity.class)
                             .putExtra("id", confirmation.toJSONObject().getJSONObject("response").getString("id"))
                             .putExtra("items", adapter.getItemList())
@@ -125,10 +127,6 @@ public class ShoppingListActivity extends AppCompatActivity {
 
             case R.id.action_add_product:
                 dialogAddProduct();
-                break;
-
-            case R.id.action_add_product_random:
-                adapter.addRandomItem();
                 break;
         }
 
@@ -238,14 +236,47 @@ public class ShoppingListActivity extends AppCompatActivity {
         requestQueue.add(arrayRequest);
     }
 
-    private void checkout() {
-        final Intent intent = new Intent(this, PaymentActivity.class);
-        final PayPalPayment payment = new PayPalPayment(new BigDecimal(adapter.getTotalPrice()), "EUR",
-                getString(R.string.display_paypal_message), PayPalPayment.PAYMENT_INTENT_SALE);
+    //TODO hacer esto
+    private void postPurchase() {
+        final String URL = "http://onthego.myddns.me:8000/enviar_compra";
+        final ArrayList<ItemConsumableAction> arrayList = new ArrayList<>();
 
-        //start paypal checkout activity
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, configuration);
-        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
-        startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+        //api rest request
+        final RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getApplicationContext()));
+        final StringRequest arrayRequest = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) { }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), R.string.error_account, Toast.LENGTH_LONG).show();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+
+
+                return params;
+            }
+        };
+        requestQueue.add(arrayRequest);
+    }
+
+    private void checkout() {
+        if (adapter.getTotalPrice() > 0) {
+            final Intent intent = new Intent(this, PaymentActivity.class);
+            final PayPalPayment payment = new PayPalPayment(new BigDecimal(adapter.getTotalPrice()), "EUR",
+                    getString(R.string.display_paypal_message), PayPalPayment.PAYMENT_INTENT_SALE);
+
+            //start paypal checkout activity
+            intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, configuration);
+            intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+            startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+        } else
+            Toast.makeText(getApplicationContext(), R.string.error_no_product, Toast.LENGTH_LONG).show();
     }
 }

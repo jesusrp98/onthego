@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .setMessage(R.string.dialog_logout_body)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().remove("key_tutorial").apply();
                         logout();
                         dialog.dismiss();
                     }

@@ -18,9 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -132,18 +129,13 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
 
     private void dialogDelete(final int i) {
         itemList.remove(i);
+        updateTotal();
         notifyDataSetChanged();
     }
 
     public void addItem(int i, int quantity) {
         itemList.add(constItemList.get(i));
         itemList.get(itemList.size() - 1).setQuantity(quantity);
-        updateTotal();
-        notifyDataSetChanged();
-    }
-
-    public void addRandomItem() {
-        itemList.add(constItemList.get(new Random().nextInt(49)));
         updateTotal();
         notifyDataSetChanged();
     }

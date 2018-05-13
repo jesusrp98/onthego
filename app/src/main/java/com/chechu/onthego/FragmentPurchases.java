@@ -58,7 +58,7 @@ public class FragmentPurchases extends Fragment {
     }
 
     private void setAdapter(String id) {
-        final String URL = "http://onthego.myddns.me:8000/get_compras_cliente?id=10017";
+        final String URL = "http://onthego.myddns.me:8000/get_compras_cliente?id=" + id;
         final ArrayList<ItemPurchase> arrayList = new ArrayList<>();
 
         //api rest request
