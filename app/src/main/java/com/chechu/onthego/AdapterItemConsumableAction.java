@@ -7,12 +7,10 @@ import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -75,7 +73,6 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
     @SuppressLint("InflateParams")
     private void dialogEdit(final int i) {
         final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_text, null);
-        final EditText dialogEditText = dialogView.findViewById(R.id.text_input);
 
         editTextDialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.dialog_edit_product_title)
@@ -83,7 +80,7 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int quantity = Integer.parseInt(dialogEditText.getText().toString());
+                        int quantity = Integer.parseInt(((EditText) dialogView.findViewById(R.id.text_input)).getText().toString());
                         if (quantity == 0)
                             Toast.makeText(context, R.string.error_stock_0, Toast.LENGTH_LONG).show();
                         else if (getItems().get(i).getStock() > quantity) {

@@ -59,7 +59,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         //paypal stuff
-        configuration = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_NO_NETWORK)
+        configuration = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
                 .clientId(PAYPAL_CLIENT_ID);
         final Intent intent = new Intent(this, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, configuration);
@@ -228,28 +228,28 @@ public class ShoppingListActivity extends AppCompatActivity {
         Volley.newRequestQueue(Objects.requireNonNull(getApplicationContext())).add(arrayRequest);
     }
 
-    //TODO esto falla
     @SuppressLint("SimpleDateFormat")
     private void postPurchase(final String id, String id_cliente) {
         final String URL = "http://onthego.myddns.me:8000/enviar_compra";
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, getPostInfo(id, id_cliente),
                 new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class)
-                            .putExtra("id", id)
-                            .putExtra("items", adapter.getItemList())
-                            .putExtra("amount", adapter.getTotalPrice())
-                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-                    }
+                    public void onResponse(JSONObject response) { }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), R.string.error_account, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), R.string.error_account, Toast.LENGTH_LONG).show();
                     }
                 }
         );
         Volley.newRequestQueue(Objects.requireNonNull(getApplicationContext())).add(jsonObjectRequest);
+
+        //iniciamos la actividad
+        startActivity(new Intent(getApplicationContext(), MainActivity.class)
+                .putExtra("id", id)
+                .putExtra("items", adapter.getItemList())
+                .putExtra("amount", adapter.getTotalPrice())
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -261,7 +261,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         try {
             object.put("id_cliente", id_cliente);
             object.put("id", id);
-            object.put("fecha", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+            object.put("fecha", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             object.put("precio_total", adapter.getTotalPrice());
 
             for (int i = 0; i < arrayList.size(); ++i) {
