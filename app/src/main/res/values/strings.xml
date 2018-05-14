@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">OnTheGo</string>
-    <string name="app_version">Versión %1$s</string>
+    <string name="app_version">v%1$s</string>
 
     <string name="activity_login">Registro de cuenta</string>
     <string name="activity_profile">Mi perfil</string>
@@ -17,6 +17,7 @@
     <string name="action_delete">BORRAR</string>
     <string name="action_telegram">VINCULAR CUENTA DE TELEGRAM</string>
     <string name="action_edit">EDITAR</string>
+    <string name="action_twitter">TWITTER.COM</string>
 
     <string name="dialog_logout_title">Cerrar sesión</string>
     <string name="dialog_logout_body">¿Está usted seguro de que desea cerrar sesión? Podrá volver a iniciar sesión más tarde.</string>
@@ -31,7 +32,7 @@
         <string name="dialog_tutorial_body">OnTheGo ofrece una nueva experiencia a la hora de comprar productos. Con esta aplicación puede controlar sus compras anteriores, así como su carrito de la compra.</string>
 
     <string name="dialog_purchase_title">Info. de la compra</string>
-    <string name="dialog_purchase_body">¡Muchas gracias por confiar en OnTheGo!\nAquí tiene la información de la compra.\n\n-ID de pago: %1$s\n\n-Lista de productos:\n%2$s\n-Precio total: %3$.2f€\n\n¡Vuelva cuando quiera!</string>
+    <string name="dialog_purchase_body">¡Muchas gracias por confiar en OnTheGo!\nAquí tiene la información de la compra.\n\n-ID de pago: %1$s.\n\n-Fecha: %2$s.\n\n-Lista de productos:\n%3$s\n-Precio total: %4$.2f€\n\n¡Vuelva cuando quiera!</string>
     <string name="dialog_purchase_date">Fecha: %s</string>
 
     <string-array name="display_maintab">

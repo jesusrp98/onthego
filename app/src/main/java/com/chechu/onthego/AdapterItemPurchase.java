@@ -29,30 +29,30 @@ public class AdapterItemPurchase extends ArrayAdapter<ItemPurchase> {
             viewHolder = new ViewHolder();
 
             //find view items by id
-            viewHolder.iconView = convertView.findViewById(R.id.item_purchase_icon);
-            viewHolder.titleView = convertView.findViewById(R.id.item_purchase_title);
-            viewHolder.descriptionView = convertView.findViewById(R.id.item_purchase_description);
+            viewHolder.photo = convertView.findViewById(R.id.item_purchase_icon);
+            viewHolder.name = convertView.findViewById(R.id.item_purchase_title);
+            viewHolder.description = convertView.findViewById(R.id.item_purchase_description);
 
             convertView.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) convertView.getTag();
 
         //assign objects to viewholder
-        viewHolder.iconView.setImageDrawable(
+        viewHolder.photo.setImageDrawable(
                 TextDrawable.builder().beginConfig().textColor(getContext().getResources().getColor(android.R.color.white))
                         .endConfig().buildRound(String.format("#%d", position + 1),
                         getContext().getResources().getColor(R.color.colorAccent))
         );
-        viewHolder.titleView.setText(itemPurchase.getId());
-        viewHolder.descriptionView.setText(String.format(getContext().getString(R.string.dialog_purchase_date), itemPurchase.getDate()));
+        viewHolder.name.setText(itemPurchase.getId());
+        viewHolder.description.setText(String.format(getContext().getString(R.string.dialog_purchase_date), itemPurchase.getDate()));
 
         return convertView;
     }
 
     //view holder cache
     private static class ViewHolder {
-        ImageView iconView;
-        TextView titleView;
-        TextView descriptionView;
+        ImageView photo;
+        TextView name;
+        TextView description;
     }
 }

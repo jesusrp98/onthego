@@ -26,6 +26,11 @@ class ItemPurchase {
             items.add(new ItemConsumableAction(array.getJSONObject(i)));
     }
 
+    public void init(String id, String date) {
+        this.id = id;
+        this.date = date;
+    }
+
     public String getId() {
         return id;
     }

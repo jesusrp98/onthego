@@ -5,15 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.Auth;
@@ -23,14 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -74,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             handleSignInResult(Auth.GoogleSignInApi.getSignInResultFromIntent(data));
     }
 
-    private void postPurchase(final GoogleSignInAccount account) {
+    private void postUser(final GoogleSignInAccount account) {
         final String URL = "http://onthego.myddns.me:8000/nuevo_usuario";
         final StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
@@ -103,8 +91,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
+        //if SUCCes, sends user info to server
         if (result.isSuccess())
-            postPurchase(result.getSignInAccount());
+            postUser(result.getSignInAccount());
         else
             Toast.makeText(this, R.string.error_account, Toast.LENGTH_LONG).show();
     }

@@ -35,9 +35,9 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
         final ItemConsumable item = itemList.get(position);
 
         //set info to ui
-        holder.consumiblePhoto.setImageResource(photoArray.getResourceId(item.getId() - 1, -1));
-        holder.consumibleTitle.setText(item.getName());
-        holder.consumableQuantity.setText(String.format(context.getString(R.string.display_consumible_price), item.getPrice()));
+        holder.photo.setImageResource(photoArray.getResourceId(item.getId() - 1, -1));
+        holder.name.setText(item.getName());
+        holder.quantity.setText(String.format(context.getString(R.string.display_consumible_price), item.getPrice()));
     }
 
     @Override
@@ -47,16 +47,16 @@ public class AdapterItemConsumable extends RecyclerView.Adapter<AdapterItemConsu
 
     //save xml ui into to cache
     class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView consumiblePhoto;
-        private final TextView consumibleTitle;
-        private final TextView consumableQuantity;
+        private final ImageView photo;
+        private final TextView name;
+        private final TextView quantity;
 
         private ViewHolder(View view) {
             super(view);
 
-            consumiblePhoto = view.findViewById(R.id.consumableIcon);
-            consumibleTitle = view.findViewById(R.id.consumableTitle);
-            consumableQuantity = view.findViewById(R.id.consumablePrice);
+            photo = view.findViewById(R.id.consumableIcon);
+            name = view.findViewById(R.id.consumableTitle);
+            quantity = view.findViewById(R.id.consumablePrice);
         }
     }
 }

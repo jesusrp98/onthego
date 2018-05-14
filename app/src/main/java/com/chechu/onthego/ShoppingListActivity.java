@@ -28,6 +28,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -41,8 +43,10 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class ShoppingListActivity extends AppCompatActivity {
     private static final String PAYPAL_CLIENT_ID = "AZXq8rssVj9vrxys4mEgAxaoj6WZUdIzCUDTqc7yoh7gD2XB_dErcSf27Z-m0MorfolToVpdfpTCA9lh";
@@ -228,13 +232,18 @@ public class ShoppingListActivity extends AppCompatActivity {
         Volley.newRequestQueue(Objects.requireNonNull(getApplicationContext())).add(arrayRequest);
     }
 
+    //TODO esto es una aberracion
     @SuppressLint("SimpleDateFormat")
-    private void postPurchase(final String id, String id_cliente) {
+    private void postPurchase(final String id, final String id_cliente) {
+        final String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         final String URL = "http://onthego.myddns.me:8000/enviar_compra";
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, getPostInfo(id, id_cliente),
+        adapter.initPurchase(id, date);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, getPostInfo(id, id_cliente, date),
                 new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONObject response) { }
+                    public void onResponse(JSONObject response) {
+                        //
+                    }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -242,18 +251,18 @@ public class ShoppingListActivity extends AppCompatActivity {
                     }
                 }
         );
-        Volley.newRequestQueue(Objects.requireNonNull(getApplicationContext())).add(jsonObjectRequest);
-
-        //iniciamos la actividad
+        //init main activity with purchase dialog
         startActivity(new Intent(getApplicationContext(), MainActivity.class)
                 .putExtra("id", id)
+                .putExtra("date", adapter.getDate())
                 .putExtra("items", adapter.getItemList())
                 .putExtra("amount", adapter.getTotalPrice())
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        Volley.newRequestQueue(Objects.requireNonNull(getApplicationContext())).add(jsonObjectRequest);
     }
 
     @SuppressLint("SimpleDateFormat")
-    private JSONObject getPostInfo(String id, String id_cliente) {
+    private JSONObject getPostInfo(String id, String id_cliente, String date) {
         final ArrayList<ItemConsumableAction> arrayList = adapter.getItems();
         final JSONObject object = new JSONObject();
         final JSONArray array = new JSONArray();
@@ -261,7 +270,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         try {
             object.put("id_cliente", id_cliente);
             object.put("id", id);
-            object.put("fecha", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            object.put("fecha", date);
             object.put("precio_total", adapter.getTotalPrice());
 
             for (int i = 0; i < arrayList.size(); ++i) {

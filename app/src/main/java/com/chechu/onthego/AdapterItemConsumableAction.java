@@ -51,10 +51,10 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
         final ItemConsumableAction item = getItems().get(position);
 
         //set info to ui
-        holder.consumableIcon.setImageResource(photoArray.getResourceId(item.getId() - 1, -1));
-        holder.consumableTitle.setText(item.getName());
-        holder.consumableAmount.setText(String.format(context.getString(R.string.display_consumible_amount), item.getQuantity()));
-        holder.consumablePrice.setText(String.format(context.getString(R.string.display_consumible_price), item.getPrice()));
+        holder.photo.setImageResource(photoArray.getResourceId(item.getId() - 1, -1));
+        holder.name.setText(item.getName());
+        holder.quantity.setText(String.format(context.getString(R.string.display_consumible_amount), item.getQuantity()));
+        holder.price.setText(String.format(context.getString(R.string.display_consumible_price), item.getPrice()));
 
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +154,10 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
         return itemPurchase.getTotalPrice();
     }
 
+    public String getDate() {
+        return itemPurchase.getDate();
+    }
+
     public ArrayList<ItemConsumableAction> getItems() {
         return itemPurchase.getItems();
     }
@@ -162,22 +166,26 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
         return photoArray.getResourceId(catalogue.get(i).getId() - 1, -1);
     }
 
+    public void initPurchase(String id, String date) {
+        itemPurchase.init(id, date);
+    }
+
     //save xml ui into to cache
     class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView consumableIcon;
-        private final TextView consumableTitle;
-        private final TextView consumableAmount;
-        private final TextView consumablePrice;
+        private final ImageView photo;
+        private final TextView name;
+        private final TextView quantity;
+        private final TextView price;
         private final Button deleteButton;
         private final Button editButton;
 
         private ViewHolder(View itemView) {
             super(itemView);
 
-            consumableIcon = itemView.findViewById(R.id.consumableIcon);
-            consumableTitle = itemView.findViewById(R.id.consumableTitle);
-            consumableAmount = itemView.findViewById(R.id.consumableAmount);
-            consumablePrice = itemView.findViewById(R.id.consumablePrice);
+            photo = itemView.findViewById(R.id.consumableIcon);
+            name = itemView.findViewById(R.id.consumableTitle);
+            quantity = itemView.findViewById(R.id.consumableAmount);
+            price = itemView.findViewById(R.id.consumablePrice);
             deleteButton = itemView.findViewById(R.id.action_delete);
             editButton = itemView.findViewById(R.id.action_edit);
         }

@@ -1,6 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
 
+    <!-- image array -->
     <string-array name="icon_view">
         <item>@drawable/icon_1</item>
         <item>@drawable/icon_2</item>

@@ -38,7 +38,7 @@ public class FragmentPurchases extends Fragment {
                 final ItemPurchase item = (ItemPurchase) parent.getItemAtPosition(position);
                 new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
                         .setTitle(R.string.dialog_purchase_title)
-                        .setMessage(String.format(getString(R.string.dialog_purchase_body), item.getId(), item.getItemList(), item.getTotalPrice()))
+                        .setMessage(String.format(getString(R.string.dialog_purchase_body), item.getId(), item.getDate(), item.getItemList(), item.getTotalPrice()))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
@@ -47,6 +47,7 @@ public class FragmentPurchases extends Fragment {
             }
         });
 
+        //set adapter to display user's purchases
         if (this.getArguments() != null)
             setAdapter(this.getArguments().getString("userId"));
         else
