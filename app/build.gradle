@@ -6,8 +6,8 @@ android {
         applicationId "com.chechu.onthego"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 11
-        versionName "0.6.11"
+        versionCode 13
+        versionName "0.8.13"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

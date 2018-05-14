@@ -40,16 +40,6 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        app:srcCompat="@drawable/ic_shopping_cart"
-        android:tint="@android:color/darker_gray"
-        android:layout_above="@+id/signInButton"
-        android:layout_below="@+id/welcomeText"
-        android:padding="96dp"/>
-
     <com.google.android.gms.common.SignInButton
         android:id="@+id/signInButton"
         android:layout_width="match_parent"

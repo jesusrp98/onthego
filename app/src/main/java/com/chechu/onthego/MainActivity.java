@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         final Intent intent = getIntent();
         if (intent.getStringExtra("id") != null)
             purchaseDialog(intent.getStringExtra("id"), intent.getStringExtra("items"),
-                    intent.getFloatExtra("amount", 0));
+                    intent.getDoubleExtra("amount", 0.0));
     }
 
     @Override
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 }).create().show();
     }
 
-    private void purchaseDialog(String id, String items, float amount) {
+    private void purchaseDialog(String id, String items, double amount) {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_purchase_title)
                 .setMessage(String.format(getString(R.string.dialog_purchase_body), id, items, amount))
