@@ -247,7 +247,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //Toast.makeText(getApplicationContext(), R.string.error_account, Toast.LENGTH_LONG).show();
+                        //
                     }
                 }
         );

@@ -120,9 +120,19 @@ public class AdapterItemConsumableAction extends RecyclerView.Adapter<AdapterIte
     }
 
     public void addItem(int i, int quantity) {
-        itemPurchase.addItem(catalogue.get(i), quantity);
-        updateTotal();
-        notifyDataSetChanged();
+        if (!listHas(i)) {
+            itemPurchase.addItem(catalogue.get(i), quantity);
+            updateTotal();
+            notifyDataSetChanged();
+        } else
+            Toast.makeText(context, R.string.error_alredy_product, Toast.LENGTH_LONG).show();
+    }
+
+    private boolean listHas(int i) {
+        for (ItemConsumableAction item : getItems())
+            if (item.equals(catalogue.get(i)))
+                return true;
+        return false;
     }
 
     public String getItemList() {

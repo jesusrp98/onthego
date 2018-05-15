@@ -58,6 +58,7 @@
     <string name="error_stock">El número introducido supera al stock del producto</string>
     <string name="error_stock_0">El número introducido es nulo</string>
     <string name="error_no_product">El carrito de la compra está vacio</string>
+    <string name="error_alredy_product">El producto seleccionado ya se encuentra en el carrito</string>
 
     <string name="key_tutorial">key_tutorial</string>
 </resources>
